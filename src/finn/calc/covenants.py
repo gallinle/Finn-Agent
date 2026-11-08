@@ -84,12 +84,19 @@ def runde(x: Decimal, stellen: int) -> Decimal:
     return x.quantize(Decimal(1).scaleb(-stellen), rounding=ROUND_HALF_UP)
 
 
+def _datum(s: str, c: Covenant) -> date:
+    try:
+        return date.fromisoformat(s)
+    except ValueError:
+        raise BerechnungsFehler(f"{c.kennzahl}: ungültiges Datum '{s}' in Grenzwert-Staffel") from None
+
+
 def _grenzwert(c: Covenant, stichtag: date):
     passend = [
         g
         for g in c.grenzwerte
-        if (g.gueltig_ab is None or date.fromisoformat(g.gueltig_ab) <= stichtag)
-        and (g.gueltig_bis is None or stichtag <= date.fromisoformat(g.gueltig_bis))
+        if (g.gueltig_ab is None or _datum(g.gueltig_ab, c) <= stichtag)
+        and (g.gueltig_bis is None or stichtag <= _datum(g.gueltig_bis, c))
     ]
     if len(passend) != 1:
         raise BerechnungsFehler(
