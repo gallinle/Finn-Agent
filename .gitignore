@@ -7,3 +7,5 @@ __pycache__/
 .pytest_cache/
 out/
 cache/processed_uids.json
+logs/
+cache/finn.lock

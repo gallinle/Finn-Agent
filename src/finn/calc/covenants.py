@@ -70,10 +70,19 @@ class CovenantErgebnis:
 @dataclass
 class VertragsErgebnis:
     datei: str
-    vertrag: Vertrag
+    vertrag: Vertrag | None
     covenants: list[CovenantErgebnis]
     groessen: dict[str, Groesse]
     warnungen: list[str] = field(default_factory=list)
+    fehler: str | None = None  # Prüfung dieses Vertrags nicht möglich
+
+    @property
+    def name(self) -> str:
+        return self.vertrag.vertragsname if self.vertrag else self.datei
+
+    @classmethod
+    def fehlgeschlagen(cls, datei: str, vertrag: Vertrag | None, grund: str) -> "VertragsErgebnis":
+        return cls(datei, vertrag, [], {}, [], grund)
 
 
 def _d(x: float | int | str) -> Decimal:

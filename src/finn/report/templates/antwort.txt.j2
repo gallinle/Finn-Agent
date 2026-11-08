@@ -15,11 +15,16 @@ anbei die Covenant-Prüfung auf Basis {{ plan_datei }} (Plan {{ stichtag.year }}
 
 ÜBERSICHT
 {% for ve in ergebnisse %}
+{% if ve.fehler %}
+- {{ ve.name }}: PRÜFUNG NICHT MÖGLICH – {{ ve.fehler }}
+{% endif %}
 {% for e in ve.covenants %}
-- {{ ve.vertrag.vertragsname }} | {{ e.kennzahl }}: {{ fmt.kennzahl(e.wert, e.einheit, e.rundung) }} (Grenzwert {{ fmt.grenzwert(e.grenzwert, e.einheit, e.richtung, e.rundung) }}, Headroom {{ fmt.headroom(e.headroom, e.einheit, e.rundung) }}) -> eingehalten: {{ "ja" if e.eingehalten else "NEIN" }}  [Grenzwert {{ fs(e.grenzwert_fundstelle) }}]
+- {{ ve.name }} | {{ e.kennzahl }}: {{ fmt.kennzahl(e.wert, e.einheit, e.rundung) }} (Grenzwert {{ fmt.grenzwert(e.grenzwert, e.einheit, e.richtung, e.rundung) }}, Headroom {{ fmt.headroom(e.headroom, e.einheit, e.rundung) }}) -> eingehalten: {{ "ja" if e.eingehalten else "NEIN" }}  [Grenzwert {{ fs(e.grenzwert_fundstelle) }}]
 {% else %}
-- {{ ve.vertrag.vertragsname }}: keine Financial Covenants{% if ve.vertrag.begruendung_fundstelle %} [{{ fs(ve.vertrag.begruendung_fundstelle) }}]{% endif %}
+{% if not ve.fehler %}
+- {{ ve.name }}: keine Financial Covenants{% if ve.vertrag.begruendung_fundstelle %} [{{ fs(ve.vertrag.begruendung_fundstelle) }}]{% endif %}
 
+{% endif %}
 {% endfor %}
 {% endfor %}
 
@@ -27,7 +32,7 @@ HERLEITUNG (T€)
 {% for ve in ergebnisse %}
 {% for e in ve.covenants %}
 
-{{ ve.vertrag.vertragsname }} – {{ e.kennzahl }}
+{{ ve.name }} – {{ e.kennzahl }}
  Zähler:
 {{ zeilen(e.zaehler_posten) }}  = {{ fmt.betrag(e.zaehler) }}
  Nenner:

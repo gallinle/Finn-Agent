@@ -32,10 +32,15 @@ S.&nbsp;{{ f.seite }}, {{ f.paragraph }}
 </tr></thead>
 <tbody>
 {% for ve in ergebnisse %}
-{% if ve.covenants %}
+{% if ve.fehler %}
+<tr>
+  <td style="padding:4px 8px">{{ ve.name }}</td>
+  <td style="padding:4px 8px;color:#b00020;font-weight:bold" colspan="6">Prüfung nicht möglich: {{ ve.fehler }}</td>
+</tr>
+{% elif ve.covenants %}
 {% for e in ve.covenants %}
 <tr>
-  <td style="padding:4px 8px">{{ ve.vertrag.vertragsname }}</td>
+  <td style="padding:4px 8px">{{ ve.name }}</td>
   <td style="padding:4px 8px">{{ e.kennzahl }}</td>
   <td style="padding:4px 8px;text-align:right;white-space:nowrap"><b>{{ fmt.kennzahl(e.wert, e.einheit, e.rundung) }}</b></td>
   <td style="padding:4px 8px;text-align:right;white-space:nowrap">{{ fmt.grenzwert(e.grenzwert, e.einheit, e.richtung, e.rundung) }}</td>
@@ -46,7 +51,7 @@ S.&nbsp;{{ f.seite }}, {{ f.paragraph }}
 {% endfor %}
 {% else %}
 <tr>
-  <td style="padding:4px 8px">{{ ve.vertrag.vertragsname }}</td>
+  <td style="padding:4px 8px">{{ ve.name }}</td>
   <td style="padding:4px 8px" colspan="5"><em>keine Financial Covenants</em></td>
   <td style="padding:4px 8px">{% if ve.vertrag.begruendung_fundstelle %}{{ fs(ve.vertrag.begruendung_fundstelle) }}{% endif %}</td>
 </tr>
@@ -58,7 +63,7 @@ S.&nbsp;{{ f.seite }}, {{ f.paragraph }}
 <p style="margin-top:0;color:#555">Beträge in T€. Fundstelle Plan = Blatt!Zelle in {{ plan_datei }}; in Klammern der Zellwert, wenn er mit umgekehrtem Vorzeichen eingeht (Aufwand im Plan negativ).</p>
 {% for ve in ergebnisse %}
 {% for e in ve.covenants %}
-<h4 style="margin:14px 0 4px">{{ ve.vertrag.vertragsname }} – {{ e.kennzahl }}</h4>
+<h4 style="margin:14px 0 4px">{{ ve.name }} – {{ e.kennzahl }}</h4>
 <p style="margin:0 0 4px;color:#333"><i>{{ e.covenant.definition_wortlaut }}</i></p>
 <table style="border-collapse:collapse;width:100%" border="1" cellspacing="0">
 <thead style="background:#e8edf2"><tr><th style="padding:3px 8px;text-align:left">Position</th><th style="padding:3px 8px">T€</th><th style="padding:3px 8px;text-align:left">Fundstelle Vertrag</th><th style="padding:3px 8px;text-align:left">Fundstelle Plan</th></tr></thead>
@@ -81,8 +86,8 @@ S.&nbsp;{{ f.seite }}, {{ f.paragraph }}
 </ul>
 {% endif %}
 {% endfor %}
-{% if not ve.covenants %}
-<h4 style="margin:14px 0 4px">{{ ve.vertrag.vertragsname }}</h4>
+{% if not ve.covenants and not ve.fehler %}
+<h4 style="margin:14px 0 4px">{{ ve.name }}</h4>
 <p style="margin:0">{{ ve.vertrag.begruendung }}{% if ve.vertrag.begruendung_fundstelle %} ({{ fs(ve.vertrag.begruendung_fundstelle) }}){% endif %}</p>
 {% endif %}
 {% for w in ve.warnungen %}<p style="margin:4px 0;color:#8a5a00">Hinweis: {{ w }}</p>{% endfor %}

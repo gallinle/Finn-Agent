@@ -19,11 +19,13 @@ def fakten(ergebnisse: list[VertragsErgebnis]) -> list[dict]:
     """Fertige, bereits formatierte Ergebnisse – die einzige Zahlenquelle für das LLM."""
     out = []
     for ve in ergebnisse:
-        if not ve.covenants:
-            out.append({"vertrag": ve.vertrag.vertragsname, "financial_covenants": "keine"})
+        if ve.fehler:
+            out.append({"vertrag": ve.name, "pruefung": "nicht möglich", "grund": ve.fehler})
+        elif not ve.covenants:
+            out.append({"vertrag": ve.name, "financial_covenants": "keine"})
         for e in ve.covenants:
             out.append({
-                "vertrag": ve.vertrag.vertragsname,
+                "vertrag": ve.name,
                 "covenant": e.kennzahl,
                 "wert": fmt.kennzahl(e.wert, e.einheit, e.rundung),
                 "grenzwert": fmt.grenzwert(e.grenzwert, e.einheit, e.richtung, e.rundung),
@@ -53,8 +55,9 @@ def erlaubte_zahlen(ergebnisse: list[VertragsErgebnis], stichtag: date) -> set[D
     n_cov = sum(len(v.covenants) for v in ergebnisse)
     n_ok = sum(e.eingehalten for v in ergebnisse for e in v.covenants)
     n_mit = sum(bool(v.covenants) for v in ergebnisse)
-    erlaubt |= {Decimal(x) for x in (len(ergebnisse), n_cov, n_ok, n_cov - n_ok, n_mit,
-                                     len(ergebnisse) - n_mit)}
+    n_fehler = sum(bool(v.fehler) for v in ergebnisse)
+    erlaubt |= {Decimal(x) for x in (len(ergebnisse), n_cov, n_ok, n_cov - n_ok, n_mit, n_fehler,
+                                     len(ergebnisse) - n_mit, len(ergebnisse) - n_mit - n_fehler)}
 
     def add(x: Decimal, stellen: int):
         for s in {stellen, 0, 1, 2}:
@@ -92,10 +95,11 @@ def pruefe_zahlen(text: str, erlaubt: set[Decimal], stichtag: date) -> list[str]
 
 def fallback(ergebnisse: list[VertragsErgebnis], stichtag: date) -> str:
     alle = [e for v in ergebnisse for e in v.covenants]
-    ohne = [v for v in ergebnisse if not v.covenants]
+    gescheitert = [v for v in ergebnisse if v.fehler]
+    ohne = [v for v in ergebnisse if not v.covenants and not v.fehler]
     verletzt = [e for e in alle if not e.eingehalten]
     s = [
-        f"Von {len(ergebnisse)} Kreditverträgen enthalten {len(ergebnisse) - len(ohne)} "
+        f"Von {len(ergebnisse)} Kreditverträgen enthalten {len(ergebnisse) - len(ohne) - len(gescheitert)} "
         f"insgesamt {len(alle)} Financial Covenants; auf Basis Plan {stichtag.year} "
         + (
             "sind alle eingehalten."
@@ -114,7 +118,12 @@ def fallback(ergebnisse: list[VertragsErgebnis], stichtag: date) -> str:
         )
     if ohne:
         s.append(
-            "Ohne Financial Covenants: " + ", ".join(v.vertrag.vertragsname for v in ohne) + "."
+            "Ohne Financial Covenants: " + ", ".join(v.name for v in ohne) + "."
+        )
+    if gescheitert:
+        s.append(
+            "ACHTUNG – nicht geprüft werden konnte: " + ", ".join(v.name for v in gescheitert)
+            + " (siehe Tabelle)."
         )
     return " ".join(s)
 
@@ -150,6 +159,6 @@ def formuliere(client, modell: str, fakten_: list[dict], stichtag: date) -> str:
 
 def ohne_namen(text: str, ergebnisse: list[VertragsErgebnis]) -> str:
     """Vertragsnamen (enthalten Nummern) vor der Zahlenprüfung ausblenden."""
-    for ve in sorted(ergebnisse, key=lambda v: -len(v.vertrag.vertragsname)):
-        text = text.replace(ve.vertrag.vertragsname, " ")
+    for ve in sorted(ergebnisse, key=lambda v: -len(v.name)):
+        text = text.replace(ve.name, " ")
     return text
