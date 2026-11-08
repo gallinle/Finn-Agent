@@ -46,12 +46,15 @@ Gmail: `imap.gmail.com:993`, `smtp.gmail.com:465`, Passwort = App-Passwort (2FA 
 Postfach: `mail/inbox.py` (imap-tools, ungelesene Mails + IDLE, verarbeitete UIDs in
 `cache/processed_uids.json`), Schleife und Fehlerbehandlung: `main.py`.
 
+Diagramme zu Komponenten, Datenmodell und Ablauf: [docs/UML.md](docs/UML.md).
+
 ## Dateien
 
 ```
 data/vertraege/*.pdf          Kreditverträge (fest hinterlegt)
 data/Wirtschaftsplan_2027.xlsx Beispiel-Auftrag
 docs/ANALYSE.md               Handanalyse Phase 1 (Referenz für die Tests)
+docs/UML.md                   UML-Diagramme (Mermaid): Komponenten, Datenmodell, Ablauf
 cache/extraktion|zuordnung/   Claude-Ergebnisse (committet → schnelle, reproduzierbare Demo)
 tests/fixtures/               auftrag.eml, Referenz-Extraktion/-Zuordnung
 logs/finn.log                 Protokoll (rotierend, nicht im Repo)
