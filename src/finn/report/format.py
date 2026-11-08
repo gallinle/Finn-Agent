@@ -39,7 +39,3 @@ def grenzwert(x: Decimal, einheit: str, richtung: str, rundung: int | None) -> s
 def headroom(x: Decimal, einheit: str, rundung: int | None) -> str:
     s = zahl(x, anzeige_stellen(rundung), vorzeichen=True)
     return f"{s} Pp" if einheit == "prozent" else s
-
-
-def fundstelle(f) -> str:
-    return f"S. {f.seite}, {f.paragraph}"

@@ -40,10 +40,8 @@ class KaputteDienste(OfflineDienste):
     def __init__(self, extraktion_fehler=None, zusammenfassung_fehler=None, fuer="Vertrag_3"):
         super().__init__(FIXTURES / "referenz")
         self.ef, self.zf, self.fuer = extraktion_fehler, zusammenfassung_fehler, fuer
-        self.aufrufe = 0
 
     def extrahiere(self, pdf, datei):
-        self.aufrufe += 1
         if self.ef and datei.startswith(self.fuer):
             raise self.ef
         return super().extrahiere(pdf, datei)

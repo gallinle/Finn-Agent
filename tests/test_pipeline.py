@@ -76,7 +76,7 @@ def test_fehlender_anhang_gibt_fehler_antwort(offline, cfg):
     assert a.in_reply_to == "<y@b.example>"
 
 
-def test_cli_schreibt_html(tmp_path, monkeypatch):
+def test_cli_schreibt_html(tmp_path):
     from conftest import FIXTURES
 
     rc = main([str(FIXTURES / "auftrag.eml"), "--offline", "--out", str(tmp_path)])

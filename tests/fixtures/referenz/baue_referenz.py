@@ -1,6 +1,4 @@
 """Referenzdaten (Handanalyse Phase 1) als Extraktion/Zuordnung: python tests/fixtures/referenz/baue_referenz.py"""
-import json
-
 from pathlib import Path
 
 from finn.extraction.schema import (Covenant, Fundstelle as F, Grenzwert, Hinweis, Margenstufe,

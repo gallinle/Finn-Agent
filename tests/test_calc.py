@@ -25,7 +25,7 @@ REF = FIXTURES / "referenz"
 
 
 @pytest.fixture(scope="module")
-def plan(request):
+def plan():
     from finn.config import PROJEKT_ROOT
 
     return lade_plan((PROJEKT_ROOT / "data" / "Wirtschaftsplan_2027.xlsx").read_bytes())
