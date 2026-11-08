@@ -86,7 +86,8 @@ class ClaudeDienste:
         if self._client is None:
             if self.nur_cache:
                 raise RuntimeError("nur_cache=True, aber Cache-Eintrag fehlt")
-            self._client = anthropic.Anthropic(max_retries=3)
+            # Längste echte Extraktion ~105 s; 300 s × (1 + 2 Wiederholungen) begrenzt Hänger auf ~15 min
+            self._client = anthropic.Anthropic(timeout=300.0, max_retries=2)
         return self._client
 
     # --- 1. Vertrag lesen -------------------------------------------------------

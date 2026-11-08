@@ -24,7 +24,7 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 from imap_tools import MailMessage
-from imap_tools.errors import MailboxLoginError
+from imap_tools.errors import ImapToolsError, MailboxLoginError
 
 from finn.config import PROJEKT_ROOT, Config, lade_config
 from finn.dienste import Dienste
@@ -56,59 +56,92 @@ def ist_automatisch(msg: MailMessage) -> str | None:
 
 @dataclass
 class Zustand:
-    """Versuchszähler je UID über mehrere Durchläufe (nur im Speicher)."""
+    """Versuchszähler je Mail (Ordner:UID) über mehrere Durchläufe (nur im Speicher)."""
 
     max_ki_versuche: int = 3
     max_sendeversuche: int = 3
+    max_fehlversuche: int = 3
     ki_versuche: Counter = field(default_factory=Counter)
     sendeversuche: Counter = field(default_factory=Counter)
+    fehlversuche: Counter = field(default_factory=Counter)
     aufgegeben: set[str] = field(default_factory=set)
+
+
+def mail_id(msg: MailMessage) -> str:
+    """Eindeutig über Ordner hinweg (UIDs gelten nur je Ordner)."""
+    return f"{getattr(msg, 'finn_ordner', 'INBOX')}:{msg.uid}"
+
+
+# Reine Verbindungsfehler: nicht der einzelnen Mail anlasten, sondern neu verbinden
+NETZ_FEHLER = (imaplib.IMAP4.abort, OSError, socket.timeout)
 
 
 def bearbeite_neue(postfach, dienste: Dienste, cfg: Config, sende: Sender,
                    zustand: Zustand | None = None) -> int:
-    """Alle neuen Aufträge einmal abarbeiten. Gibt die Zahl der erledigten Mails zurück."""
+    """Alle neuen Aufträge einmal abarbeiten. Gibt die Zahl der erledigten Mails zurück.
+
+    Ein unerwarteter Fehler betrifft nur die jeweilige Mail; nach `max_fehlversuche`
+    wird sie bis zum Neustart übersprungen, damit sie nicht alle weiteren blockiert.
+    """
     zustand = zustand or Zustand()
     erledigt = 0
     for msg in postfach.neue():
-        if msg.uid in zustand.aufgegeben:
-            continue
-        absender = (msg.from_ or "").lower()
-        log.info("Mail uid=%s von %s: %r", msg.uid, msg.from_, msg.subject)
-        if absender == cfg.mail_user.lower():
-            log.info("uid=%s stammt vom eigenen Konto – keine Antwort", msg.uid)
-            postfach.erledigt(msg, beantwortet=False)
-            continue
-        if grund := ist_automatisch(msg):
-            log.info("uid=%s ist automatisch erzeugt (%s) – keine Antwort", msg.uid, grund)
-            postfach.erledigt(msg, beantwortet=False)
-            continue
-        zustand.ki_versuche[msg.uid] += 1
-        letzter = zustand.ki_versuche[msg.uid] >= zustand.max_ki_versuche
-        try:
-            antwort = verarbeite(msg, dienste, cfg, letzter_versuch=letzter)
-        except VoruebergehenderFehler as e:
-            log.warning("uid=%s: KI-Dienst nicht erreichbar (Versuch %d/%d): %s – später erneut",
-                        msg.uid, zustand.ki_versuche[msg.uid], zustand.max_ki_versuche, e)
+        mid = mail_id(msg)
+        if mid in zustand.aufgegeben:
             continue
         try:
-            sende(antwort)
+            erledigt += _bearbeite_eine(msg, mid, postfach, dienste, cfg, sende, zustand)
+        except NETZ_FEHLER:
+            raise
         except Exception:
-            zustand.sendeversuche[msg.uid] += 1
-            n = zustand.sendeversuche[msg.uid]
-            if n >= zustand.max_sendeversuche:
-                zustand.aufgegeben.add(msg.uid)
-                log.exception("Versand an %s endgültig fehlgeschlagen (%d Versuche) – uid=%s bleibt "
-                              "ungelesen und wird erst nach Neustart erneut versucht", antwort.an, n, msg.uid)
+            zustand.fehlversuche[mid] += 1
+            n = zustand.fehlversuche[mid]
+            if n >= zustand.max_fehlversuche:
+                zustand.aufgegeben.add(mid)
+                log.exception("Mail %s: unerwarteter Fehler (%d/%d) – wird bis zum Neustart "
+                              "übersprungen", mid, n, zustand.max_fehlversuche)
             else:
-                log.exception("Versand an %s fehlgeschlagen (Versuch %d/%d) – uid=%s bleibt offen",
-                              antwort.an, n, zustand.max_sendeversuche, msg.uid)
-            continue
-        log.info("%s an %s gesendet (uid=%s)", "Fehler-Antwort" if antwort.ist_fehler else "Antwort",
-                 antwort.an, msg.uid)
-        postfach.erledigt(msg)
-        erledigt += 1
+                log.exception("Mail %s: unerwarteter Fehler (%d/%d) – nächster Durchlauf",
+                              mid, n, zustand.max_fehlversuche)
     return erledigt
+
+
+def _bearbeite_eine(msg, mid, postfach, dienste, cfg, sende, zustand) -> int:
+    absender = (msg.from_ or "").lower()
+    log.info("Mail %s von %s: %r", mid, msg.from_, msg.subject)
+    if absender == cfg.mail_user.lower():
+        log.info("%s stammt vom eigenen Konto – keine Antwort", mid)
+        postfach.erledigt(msg, beantwortet=False)
+        return 0
+    if grund := ist_automatisch(msg):
+        log.info("%s ist automatisch erzeugt (%s) – keine Antwort", mid, grund)
+        postfach.erledigt(msg, beantwortet=False)
+        return 0
+    zustand.ki_versuche[mid] += 1
+    letzter = zustand.ki_versuche[mid] >= zustand.max_ki_versuche
+    try:
+        antwort = verarbeite(msg, dienste, cfg, letzter_versuch=letzter)
+    except VoruebergehenderFehler as e:
+        log.warning("%s: KI-Dienst nicht erreichbar (Versuch %d/%d): %s – später erneut",
+                    mid, zustand.ki_versuche[mid], zustand.max_ki_versuche, e)
+        return 0
+    try:
+        sende(antwort)
+    except Exception:
+        zustand.sendeversuche[mid] += 1
+        n = zustand.sendeversuche[mid]
+        if n >= zustand.max_sendeversuche:
+            zustand.aufgegeben.add(mid)
+            log.exception("Versand an %s endgültig fehlgeschlagen (%d Versuche) – %s bleibt "
+                          "ungelesen und wird erst nach Neustart erneut versucht", antwort.an, n, mid)
+        else:
+            log.exception("Versand an %s fehlgeschlagen (Versuch %d/%d) – %s bleibt offen",
+                          antwort.an, n, zustand.max_sendeversuche, mid)
+        return 0
+    log.info("%s an %s gesendet (%s)", "Fehler-Antwort" if antwort.ist_fehler else "Antwort",
+             antwort.an, mid)
+    postfach.erledigt(msg)
+    return 1
 
 
 def _trocken_sender(cfg: Config, ziel: Path) -> Sender:
@@ -221,11 +254,13 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
 
-def _schleife(cfg, dienste, speicher, sende, zustand, einmal: bool, trocken: bool) -> int:
+def _schleife(cfg, dienste, speicher, sende, zustand, einmal: bool, trocken: bool,
+              postfach_fabrik=Postfach) -> int:
     pause = 5
     while True:
         try:
-            with Postfach(cfg, speicher, spam_filter=sieht_wie_auftrag if cfg.spam_lesen else None) as postfach:
+            with postfach_fabrik(cfg, speicher,
+                                 spam_filter=sieht_wie_auftrag if cfg.spam_lesen else None) as postfach:
                 pause = 5  # Verbindung steht → Backoff zurücksetzen
                 p = _NurLesen(postfach) if trocken else postfach
                 while True:
@@ -236,14 +271,19 @@ def _schleife(cfg, dienste, speicher, sende, zustand, einmal: bool, trocken: boo
         except MailboxLoginError as e:
             log.critical("IMAP-Anmeldung abgelehnt – MAIL_USER/MAIL_PASSWORD prüfen: %s", e)
             return 2
-        except VERBINDUNGS_FEHLER as e:
+        except (*VERBINDUNGS_FEHLER, ImapToolsError) as e:
             if einmal:
-                log.error("Verbindungsfehler: %s", e)
+                log.error("IMAP-Fehler: %s: %s", type(e).__name__, e)
                 return 1
-            log.warning("Verbindung unterbrochen (%s: %s) – neuer Versuch in %ds",
-                        type(e).__name__, e, pause)
-            time.sleep(pause)
-            pause = min(pause * 2, 300)
+            log.warning("IMAP-Fehler (%s: %s) – neu verbinden in %ds", type(e).__name__, e, pause)
+        except Exception:
+            # letzte Verteidigungslinie: nie still sterben, sondern protokollieren und weitermachen
+            if einmal:
+                log.exception("Unerwarteter Fehler")
+                return 1
+            log.exception("Unerwarteter Fehler in der Hauptschleife – neu verbinden in %ds", pause)
+        time.sleep(pause)
+        pause = min(pause * 2, 300)
 
 
 if __name__ == "__main__":

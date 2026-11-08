@@ -9,12 +9,14 @@ import httpx2
 import openpyxl
 import pytest
 from imap_tools import MailMessage
+from imap_tools.errors import MailboxFetchError, MailboxMoveError
 
 from conftest import FIXTURES
 from finn.dienste import OfflineDienste
 from finn.extraction.llm import LLMFehler
 from finn.mail.inbox import UidSpeicher
-from finn.main import Sperre, Zustand, bearbeite_neue
+import finn.main as finn_main
+from finn.main import NETZ_FEHLER, Sperre, Zustand, _schleife, bearbeite_neue
 from finn.pipeline import VoruebergehenderFehler, pruefe, verarbeite
 from test_mail import FakePostfach, _Msg
 
@@ -185,7 +187,7 @@ def test_sendefehler_nach_max_versuchen_aufgegeben(tmp_path, offline, cfg):
 
     for _ in range(4):
         bearbeite_neue(pf, offline, cfg, kaputt, z)
-    assert len(versuche) == 2 and "12" in z.aufgegeben
+    assert len(versuche) == 2 and "INBOX:12" in z.aufgegeben
     assert pf.gelesen == []          # bleibt ungelesen → nach Neustart erneut
 
 
@@ -203,3 +205,140 @@ def test_uid_speicher_ueberlebt_kaputte_schreibvorgaenge(tmp_path):
     UidSpeicher(p).merke("k", "1")
     assert not list(tmp_path.glob(".uids-*"))   # keine Temp-Reste (atomar via os.replace)
     assert UidSpeicher(p).enthaelt("k", "1")
+
+
+# --- A/B: Hauptschleife stirbt nicht, einzelne Mails blockieren nicht ----------
+
+
+class _Stopp(BaseException):
+    """Beendet die Endlosschleife im Test (BaseException: wird von der Schleife nicht abgefangen)."""
+
+
+def test_giftige_mail_blockiert_nicht_die_anderen(tmp_path, offline, cfg):
+    cfg = replace(cfg, mail_user="finn@finn-agent.example")
+    gift, gut = _auftrag([], uid="20"), _auftrag([], uid="21")
+
+    class Pf(FakePostfach):
+        def erledigt(self, m, beantwortet=True):
+            if m.uid == "20":
+                raise ValueError("kaputter Header")
+            super().erledigt(m, beantwortet)
+
+    pf, z, gesendet = Pf([gift, gut], UidSpeicher(tmp_path / "u.json")), Zustand(max_fehlversuche=2), []
+    assert bearbeite_neue(pf, offline, cfg, gesendet.append, z) == 1        # gute Mail trotzdem erledigt
+    assert "21" in pf.gelesen and z.fehlversuche["INBOX:20"] == 1
+    bearbeite_neue(pf, offline, cfg, gesendet.append, z)
+    assert "INBOX:20" in z.aufgegeben
+    n = len(gesendet)
+    bearbeite_neue(pf, offline, cfg, gesendet.append, z)
+    assert len(gesendet) == n                                                # nicht erneut versucht
+
+
+def test_netzfehler_wird_nicht_der_mail_angelastet(tmp_path, offline, cfg):
+    cfg = replace(cfg, mail_user="finn@finn-agent.example")
+
+    class Pf(FakePostfach):
+        def erledigt(self, m, beantwortet=True):
+            raise ConnectionResetError("Netz weg")
+
+    z = Zustand()
+    with pytest.raises(NETZ_FEHLER):
+        bearbeite_neue(Pf([_auftrag([], uid="22")], UidSpeicher(tmp_path / "u.json")), offline, cfg,
+                       lambda a: None, z)
+    assert z.fehlversuche["INBOX:22"] == 0 and not z.aufgegeben
+
+
+@pytest.mark.parametrize("fehler", [MailboxFetchError(("NO", [b"x"]), "OK"), RuntimeError("unerwartet"),
+                                    ConnectionResetError("reset")])
+def test_schleife_verbindet_neu_statt_abzustuerzen(monkeypatch, cfg, offline, tmp_path, fehler):
+    monkeypatch.setattr(finn_main.time, "sleep", lambda s: None)
+    verbindungen = []
+
+    class FabrikPf:
+        def __init__(self, *a, **kw):
+            verbindungen.append(self)
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+        def neue(self):
+            if len(verbindungen) == 1:
+                raise fehler                  # erste Verbindung scheitert
+            return []
+
+        def warte(self, timeout):
+            raise _Stopp                      # zweite Verbindung läuft → Test beenden
+
+    with pytest.raises(_Stopp):
+        _schleife(cfg, offline, UidSpeicher(tmp_path / "u.json"), lambda a: None, Zustand(),
+                  einmal=False, trocken=False, postfach_fabrik=FabrikPf)
+    assert len(verbindungen) == 2
+
+
+def test_schleife_einmal_meldet_fehler_mit_exitcode(cfg, offline, tmp_path):
+    class FabrikPf:
+        def __init__(self, *a, **kw):
+            pass
+
+        def __enter__(self):
+            raise MailboxFetchError(("NO", [b"x"]), "OK")
+
+        def __exit__(self, *exc):
+            return False
+
+    assert _schleife(cfg, offline, UidSpeicher(tmp_path / "u.json"), lambda a: None, Zustand(),
+                     einmal=True, trocken=False, postfach_fabrik=FabrikPf) == 1
+
+
+def test_verschieben_aus_spam_scheitert_harmlos(tmp_path, plan_bytes):
+    from test_erweiterungen import FakeIMAP, _postfach
+
+    imap = FakeIMAP({"INBOX": [], "[Gmail]/Spam": [_auftrag([("x.xlsx", plan_bytes)], uid="23")]})
+
+    def kaputt(uid, ziel):
+        raise MailboxMoveError(("NO", [b"x"]), "OK")
+
+    imap.move = kaputt
+    p = _postfach(tmp_path, imap)
+    m = p.neue()[0]
+    p.erledigt(m)                                     # keine Exception
+    assert ("[Gmail]/Spam", "23") in imap.gelesen and imap.aktuell == "INBOX"
+    assert p.speicher.enthaelt(p.keys["[Gmail]/Spam"], "23")
+
+
+# --- C: Claude-Client mit begrenztem Timeout ------------------------------------
+
+
+def test_claude_client_timeout(cfg, monkeypatch):
+    from finn.extraction.contracts import ClaudeDienste
+
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test")
+    c = ClaudeDienste(cfg).client
+    assert c.timeout == 300.0 and c.max_retries == 2
+
+
+# --- D: XML-Bombe im Excel wird abgewiesen (defusedxml) --------------------------
+
+
+def test_xml_bombe_wird_abgewiesen(offline, cfg, plan_bytes):
+    import zipfile
+
+    import openpyxl as ox
+
+    assert ox.DEFUSEDXML
+    bombe = (b'<?xml version="1.0"?><!DOCTYPE lolz [<!ENTITY lol "lol">'
+             b'<!ENTITY lol2 "&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;">'
+             b'<!ENTITY lol3 "&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;">]>'
+             b'<sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" count="1" uniqueCount="1">'
+             b'<si><t>&lol3;</t></si></sst>')
+    quelle, ziel = io.BytesIO(plan_bytes), io.BytesIO()
+    with zipfile.ZipFile(quelle) as zin, zipfile.ZipFile(ziel, "w") as zout:
+        namen = zin.namelist()
+        for n in namen:
+            zout.writestr(n, bombe if n == "xl/sharedStrings.xml" else zin.read(n))
+    assert "xl/sharedStrings.xml" in zipfile.ZipFile(io.BytesIO(plan_bytes)).namelist()
+    a = verarbeite(_auftrag([("Wirtschaftsplan_2027.xlsx", ziel.getvalue())]), offline, cfg)
+    assert a.ist_fehler and "konnte nicht als Wirtschaftsplan gelesen werden" in a.text

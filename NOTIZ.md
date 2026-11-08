@@ -45,6 +45,13 @@
   hat nach jeder Phase geprüft und freigegeben. Die Handanalyse (Phase 1) wurde mit Decimal nachgerechnet und vom
   Auftraggeber bestätigt.
 
+## Bewusst offen
+- Stürzt der Prozess genau zwischen Versand und dem Merken der UID ab, wird die Mail nach dem Neustart erneut
+  beantwortet (kurzes Fenster, harmlose Folge).
+- Jeder Absender kann mit einer Excel-Datei Claude-Aufrufe auslösen. Eine Liste erlaubter Absender würde die
+  Demo von fremder Adresse verhindern und ist daher ein nächster Schritt.
+- Kein automatischer Neustart (für die Demo genügt ein Terminal; Dauerbetrieb über systemd).
+
 ## Nächste Schritte
 - OAuth2 (Microsoft 365 / Google Workspace) statt App-Passwort; Betrieb als systemd-Dienst mit Alarm bei CRITICAL.
 - Prompt- und Schema-Version in den Cache-Schlüssel aufnehmen; kurzer Anzeigename je Vertrag.

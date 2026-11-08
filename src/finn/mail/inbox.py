@@ -10,6 +10,7 @@ from collections.abc import Callable
 from pathlib import Path
 
 from imap_tools import AND, MailBox, MailMessage, MailMessageFlags
+from imap_tools.errors import ImapToolsError
 
 log = logging.getLogger("finn.inbox")
 
@@ -122,8 +123,11 @@ class Postfach:
             self.mb.folder.set(o)
             self.mb.flag(msg.uid, MailMessageFlags.SEEN, True)
             if beantwortet:
-                self.mb.move(msg.uid, self.ordner)
-                log.info("uid=%s aus %s in den Posteingang verschoben", msg.uid, o)
+                try:
+                    self.mb.move(msg.uid, self.ordner)
+                    log.info("uid=%s aus %s in den Posteingang verschoben", msg.uid, o)
+                except ImapToolsError as e:  # kosmetisch: Mail ist bereits gelesen und gemerkt
+                    log.warning("uid=%s konnte nicht verschoben werden: %s", msg.uid, e)
         finally:
             self.mb.folder.set(self.ordner)
 
