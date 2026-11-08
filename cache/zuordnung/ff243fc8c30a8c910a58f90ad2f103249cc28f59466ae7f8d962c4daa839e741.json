@@ -1,0 +1,52 @@
+{
+  "zuordnungen": [
+    {
+      "term_id": "Wirtschaftliches Eigenkapital/1",
+      "quellen": [
+        {
+          "blatt": "Bilanz",
+          "zeile": "B. Sonderposten für Investitions- und Baukostenzuschüsse",
+          "spalte": "31.12.2027 (Plan)",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die Zeile weist laut Erläuterung 1) die passivierten Investitions- und Baukostenzuschüsse einschließlich Netzanschlusskostenbeiträgen aus und entspricht damit dem Sonderposten der Definition; die 50-%-Anrechnung wendet der Code an."
+    },
+    {
+      "term_id": "Eigenkapital/0",
+      "quellen": [
+        {
+          "blatt": "Bilanz",
+          "zeile": "A. Eigenkapital",
+          "spalte": "31.12.2027 (Plan)",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die Position A. Eigenkapital entspricht dem nach § 266 Abs. 3 A HGB ausgewiesenen Eigenkapital ohne das separat unter Verbindlichkeiten geführte nachrangige Gesellschafterdarlehen."
+    },
+    {
+      "term_id": "Eigenkapital/1",
+      "quellen": [],
+      "nicht_im_plan": true,
+      "begruendung": "Der Plan weist keine eingeforderten, aber noch nicht eingezahlten Einlagen aus."
+    },
+    {
+      "term_id": "Wirtschaftliche Eigenkapitalquote/nenner/0",
+      "quellen": [
+        {
+          "blatt": "Bilanz",
+          "zeile": "Summe Aktiva (Bilanzsumme)",
+          "spalte": "31.12.2027 (Plan)",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die Summe Aktiva zum Planstichtag 31.12.2027 entspricht der vertraglich definierten Bilanzsumme."
+    }
+  ]
+}

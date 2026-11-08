@@ -1,0 +1,128 @@
+{
+  "zuordnungen": [
+    {
+      "term_id": "EBITDA/0",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Jahresüberschuss",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Der Jahresüberschuss laut Erfolgsplan 2027 entspricht direkt dem vertraglichen Jahresüberschuss bzw. Jahresfehlbetrag gemäß GuV."
+    },
+    {
+      "term_id": "EBITDA/1",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Steuern vom Einkommen und vom Ertrag",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "betrag"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die GuV-Zeile Steuern vom Einkommen und vom Ertrag bildet die hinzuzurechnenden Ertragsteuern direkt ab."
+    },
+    {
+      "term_id": "EBITDA/2",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Zinsen und ähnliche Aufwendungen",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "betrag"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Laut Vertrag ist die gesamte GuV-Position einschließlich der Aufzinsung von Rückstellungen hinzuzurechnen."
+    },
+    {
+      "term_id": "EBITDA/3",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Sonstige Zinsen und ähnliche Erträge",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die GuV-Zeile Sonstige Zinsen und ähnliche Erträge entspricht direkt der abzuziehenden Ertragsposition."
+    },
+    {
+      "term_id": "EBITDA/4",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Abschreibungen auf immaterielle Vermögensgegenstände und Sachanlagen",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "betrag"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die GuV-Zeile Abschreibungen auf immaterielle Vermögensgegenstände und Sachanlagen entspricht genau der vertraglichen Abschreibungsposition."
+    },
+    {
+      "term_id": "EBITDA/5",
+      "quellen": [],
+      "nicht_im_plan": true,
+      "begruendung": "Der Wirtschaftsplan weist keine außerordentlichen Aufwendungen im Sinne von § 285 Nr. 31 HGB gesondert aus."
+    },
+    {
+      "term_id": "EBITDA/6",
+      "quellen": [],
+      "nicht_im_plan": true,
+      "begruendung": "Der Wirtschaftsplan weist keine außerordentlichen Erträge im Sinne von § 285 Nr. 31 HGB gesondert aus."
+    },
+    {
+      "term_id": "Schuldendienst/0",
+      "quellen": [
+        {
+          "blatt": "Finanzierung",
+          "zeile": "Summe Darlehen gesamt",
+          "spalte": "Zinsaufwand 2027",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Der Zinsaufwand aller Darlehen umfasst laut Erläuterung keine Aufzinsung von Rückstellungen und schließt das nachrangige Gesellschafterdarlehen ein, wie es der Vertrag verlangt."
+    },
+    {
+      "term_id": "Schuldendienst/1",
+      "quellen": [
+        {
+          "blatt": "Finanzierung",
+          "zeile": "Summe Darlehen gesamt",
+          "spalte": "Planmäßige Tilgung 2027",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die Spalte planmäßige Tilgung aller Darlehen schließt das Gesellschafterdarlehen ein und enthält die freiwillige Sondertilgung des Konsortialkredits nicht, da diese separat ausgewiesen ist."
+    },
+    {
+      "term_id": "Schuldendienstdeckungsgrad (DSCR)/zaehler/1",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Steuern vom Einkommen und vom Ertrag",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "betrag"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die Ertragsteuern sind laut Vertrag die in der GuV ausgewiesenen Steuern vom Einkommen und vom Ertrag."
+    }
+  ]
+}

@@ -6,6 +6,8 @@ import re
 from datetime import date
 from decimal import Decimal, InvalidOperation
 
+from pydantic import BaseModel
+
 from finn.calc.covenants import Posten, VertragsErgebnis
 from finn.report import format as fmt
 
@@ -115,3 +117,39 @@ def fallback(ergebnisse: list[VertragsErgebnis], stichtag: date) -> str:
             "Ohne Financial Covenants: " + ", ".join(v.vertrag.vertragsname for v in ohne) + "."
         )
     return " ".join(s)
+
+
+# --- Formulierung per Claude --------------------------------------------------
+
+SYSTEM_PROMPT = """\
+Du schreibst für eine Finanzabteilung die Zusammenfassung einer Covenant-Prüfung auf Planbasis.
+Die Ergebnisse sind fertig berechnet. Du rechnest nicht und nennst ausschließlich Zahlen, die
+wörtlich in den Fakten stehen (gleiche Schreibweise). Keine Paragraphen, keine Vertragsnummern,
+keine Daten außer dem Stichtag.
+Schreibe 2–3 sachliche Sätze auf Deutsch: Gesamtergebnis, knappste(r) Covenant(s) mit Wert,
+Grenzwert und Headroom, ggf. Verträge ohne Covenants. Planwerte dienen der Frühwarnung."""
+
+
+class _Text(BaseModel):
+    text: str
+
+
+def formuliere(client, modell: str, fakten_: list[dict], stichtag: date) -> str:
+    from finn.extraction.llm import parse
+
+    import json
+
+    out = parse(
+        client, modell, _Text, SYSTEM_PROMPT,
+        [{"type": "text", "text": f"Stichtag: {stichtag:%d.%m.%Y}\nFakten:\n"
+          + json.dumps(fakten_, ensure_ascii=False, indent=1)}],
+        max_tokens=4000, zweck="Zusammenfassung",
+    )
+    return out.text.strip()
+
+
+def ohne_namen(text: str, ergebnisse: list[VertragsErgebnis]) -> str:
+    """Vertragsnamen (enthalten Nummern) vor der Zahlenprüfung ausblenden."""
+    for ve in sorted(ergebnisse, key=lambda v: -len(v.vertrag.vertragsname)):
+        text = text.replace(ve.vertrag.vertragsname, " ")
+    return text

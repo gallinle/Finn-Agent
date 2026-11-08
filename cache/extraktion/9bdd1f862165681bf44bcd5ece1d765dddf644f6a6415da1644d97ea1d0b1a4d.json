@@ -1,0 +1,480 @@
+{
+  "schema_version": 1,
+  "datei": "Vertrag_4_Konsortialkredit.pdf",
+  "modell": "claude-opus-5-5",
+  "vertrag": {
+    "vertragsname": "Weserland Bank AG (Konsortialführerin/Agent) mit Volksbank Musterregion eG und Sparkasse Musterstadt – Konsortialkredit (Laufzeitkredit) über EUR 64.000.000,00 vom 30.11.2023 (keine Darlehensnummer angegeben)",
+    "hat_financial_covenants": true,
+    "begruendung": "§ 14 Abs. 1 verpflichtet die Kreditnehmerin, zwei Finanzkennzahlen einzuhalten: eine Eigenkapitalquote von mindestens 30,0 % und einen Dynamischen Verschuldungsgrad von höchstens 3,50. Eine Verletzung ist nach § 16 Abs. 1 lit. b ein Kündigungsgrund. Das Margenraster in § 6 Abs. 3 dient nach § 6 Abs. 4 ausschließlich der Preisbestimmung und ist daher kein Covenant.",
+    "begruendung_fundstelle": {
+      "seite": 7,
+      "paragraph": "§ 16 Abs. 1 lit. b",
+      "zitat": "b) Finanzkennzahlen: Eine der Verpflichtungen nach § 14 Absatz 1 wird nicht eingehalten."
+    },
+    "zwischengroessen": [
+      {
+        "name": "EBITDA",
+        "terme": [
+          {
+            "bezeichnung": "Jahresüberschuss bzw. Jahresfehlbetrag",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "Erträge aus der Auflösung von Sonderposten werden nicht bereinigt (verbleiben im EBITDA)",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „EBITDA“",
+              "zitat": "bezeichnet für einen Prüfungszeitraum den Jahresüberschuss bzw. Jahresfehlbetrag der Kreditnehmerin"
+            }
+          },
+          {
+            "bezeichnung": "Steuern vom Einkommen und vom Ertrag",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "nur soweit bei der Ermittlung des Jahresüberschusses/-fehlbetrages berücksichtigt",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „EBITDA“ lit. a",
+              "zitat": "(a) zuzüglich der Steuern vom Einkommen und vom Ertrag, (b) zuzüglich der Zinsen und ähnlichen Aufwendungen"
+            }
+          },
+          {
+            "bezeichnung": "Zinsen und ähnliche Aufwendungen",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "nur soweit bei der Ermittlung des Jahresüberschusses/-fehlbetrages berücksichtigt",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „EBITDA“ lit. b",
+              "zitat": "(a) zuzüglich der Steuern vom Einkommen und vom Ertrag, (b) zuzüglich der Zinsen und ähnlichen Aufwendungen"
+            }
+          },
+          {
+            "bezeichnung": "Sonstige Zinsen und ähnliche Erträge",
+            "art": "planposition",
+            "vorzeichen": -1,
+            "faktor": 1.0,
+            "hinweis": "nur soweit bei der Ermittlung des Jahresüberschusses/-fehlbetrages berücksichtigt",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „EBITDA“ lit. c",
+              "zitat": "(c) abzüglich der sonstigen Zinsen und ähnlichen Erträge, (d) zuzüglich der Abschreibungen auf immaterielle Vermögensgegenstände und Sachanlagen"
+            }
+          },
+          {
+            "bezeichnung": "Abschreibungen auf immaterielle Vermögensgegenstände und Sachanlagen",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "nur soweit bei der Ermittlung des Jahresüberschusses/-fehlbetrages berücksichtigt",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „EBITDA“ lit. d",
+              "zitat": "(c) abzüglich der sonstigen Zinsen und ähnlichen Erträge, (d) zuzüglich der Abschreibungen auf immaterielle Vermögensgegenstände und Sachanlagen"
+            }
+          },
+          {
+            "bezeichnung": "Außerordentliche Aufwendungen (§ 285 Nr. 31 HGB)",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "nur soweit bei der Ermittlung des Jahresüberschusses/-fehlbetrages berücksichtigt",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „EBITDA“ lit. e",
+              "zitat": "(e) zuzüglich bzw. abzüglich außerordentlicher Aufwendungen bzw. Erträge im Sinne von § 285 Nr. 31 HGB"
+            }
+          },
+          {
+            "bezeichnung": "Außerordentliche Erträge (§ 285 Nr. 31 HGB)",
+            "art": "planposition",
+            "vorzeichen": -1,
+            "faktor": 1.0,
+            "hinweis": "nur soweit bei der Ermittlung des Jahresüberschusses/-fehlbetrages berücksichtigt; Erträge aus der Auflösung von Sonderposten werden nicht bereinigt",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „EBITDA“ lit. e",
+              "zitat": "(e) zuzüglich bzw. abzüglich außerordentlicher Aufwendungen bzw. Erträge im Sinne von § 285 Nr. 31 HGB"
+            }
+          }
+        ],
+        "fundstelle": {
+          "seite": 2,
+          "paragraph": "§ 1 Abs. 1 „EBITDA“",
+          "zitat": "bezeichnet für einen Prüfungszeitraum den Jahresüberschuss bzw. Jahresfehlbetrag der Kreditnehmerin"
+        }
+      },
+      {
+        "name": "Finanzverbindlichkeiten",
+        "terme": [
+          {
+            "bezeichnung": "Verbindlichkeiten aus aufgenommenen Darlehen und Krediten",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "ohne Doppelzählung; ohne Nachrangige Gesellschafterdarlehen (qualifizierter Rangrücktritt nach § 39 Abs. 2 InsO)",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „Finanzverbindlichkeiten“ lit. a",
+              "zitat": "bezeichnet ohne Doppelzählung sämtliche Verbindlichkeiten der Kreditnehmerin aus (a) aufgenommenen Darlehen und Krediten, (b) Anleihen,"
+            }
+          },
+          {
+            "bezeichnung": "Anleihen, Schuldverschreibungen, Schuldscheindarlehen und ähnliche Instrumente",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "ohne Doppelzählung; ohne Nachrangige Gesellschafterdarlehen",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „Finanzverbindlichkeiten“ lit. b",
+              "zitat": "Schuldverschreibungen, Schuldscheindarlehen und ähnlichen Instrumenten, (c) Finanzierungsleasingverträgen, soweit nach HGB als Verbindlichkeit bilanziert,"
+            }
+          },
+          {
+            "bezeichnung": "Verbindlichkeiten aus Finanzierungsleasingverträgen",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "nur soweit nach HGB als Verbindlichkeit bilanziert",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „Finanzverbindlichkeiten“ lit. c",
+              "zitat": "Schuldverschreibungen, Schuldscheindarlehen und ähnlichen Instrumenten, (c) Finanzierungsleasingverträgen, soweit nach HGB als Verbindlichkeit bilanziert,"
+            }
+          },
+          {
+            "bezeichnung": "Verbindlichkeiten aus Verkäufen von Forderungen mit Rückgriff",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "ohne Doppelzählung",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „Finanzverbindlichkeiten“ lit. d",
+              "zitat": "von Forderungen mit Rückgriff und (e) sonstigen Geschäften mit der wirtschaftlichen Wirkung einer Kreditaufnahme, jedoch jeweils mit Ausnahme"
+            }
+          },
+          {
+            "bezeichnung": "Verbindlichkeiten aus sonstigen Geschäften mit der wirtschaftlichen Wirkung einer Kreditaufnahme",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "ohne Doppelzählung; ausdrücklich ohne Nachrangige Gesellschafterdarlehen (gilt für alle Bestandteile lit. a–e)",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „Finanzverbindlichkeiten“ lit. e",
+              "zitat": "sonstigen Geschäften mit der wirtschaftlichen Wirkung einer Kreditaufnahme, jedoch jeweils mit Ausnahme von Nachrangigen Gesellschafterdarlehen."
+            }
+          }
+        ],
+        "fundstelle": {
+          "seite": 2,
+          "paragraph": "§ 1 Abs. 1 „Finanzverbindlichkeiten“",
+          "zitat": "bezeichnet ohne Doppelzählung sämtliche Verbindlichkeiten der Kreditnehmerin aus (a) aufgenommenen Darlehen und Krediten, (b) Anleihen,"
+        }
+      },
+      {
+        "name": "Nettofinanzverbindlichkeiten",
+        "terme": [
+          {
+            "bezeichnung": "Finanzverbindlichkeiten",
+            "art": "zwischengroesse",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "ohne Nachrangige Gesellschafterdarlehen",
+            "fundstelle": {
+              "seite": 3,
+              "paragraph": "§ 1 Abs. 1 „Nettofinanzverbindlichkeiten“",
+              "zitat": "bezeichnet zu einem Stichtag die Summe der Finanzverbindlichkeiten abzüglich der Liquiden Mittel."
+            }
+          },
+          {
+            "bezeichnung": "Liquide Mittel (Kassenbestand und Guthaben bei Kreditinstituten)",
+            "art": "planposition",
+            "vorzeichen": -1,
+            "faktor": 1.0,
+            "hinweis": "nur soweit frei verfügbar und nicht verpfändet oder anderweitig mit Rechten Dritter belastet",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „Liquide Mittel“",
+              "zitat": "bezeichnet den Kassenbestand und die Guthaben der Kreditnehmerin bei Kreditinstituten, soweit diese frei verfügbar und nicht verpfändet"
+            }
+          }
+        ],
+        "fundstelle": {
+          "seite": 3,
+          "paragraph": "§ 1 Abs. 1 „Nettofinanzverbindlichkeiten“",
+          "zitat": "bezeichnet zu einem Stichtag die Summe der Finanzverbindlichkeiten abzüglich der Liquiden Mittel."
+        }
+      }
+    ],
+    "covenants": [
+      {
+        "kennzahl": "Eigenkapitalquote",
+        "definition_wortlaut": "„Eigenkapitalquote“ bezeichnet das Verhältnis des Eigenkapitals zur Bilanzsumme zum jeweiligen Prüfungsstichtag, ausgedrückt in Prozent. „Eigenkapital“ bezeichnet das bilanzielle Eigenkapital der Kreditnehmerin gemäß § 266 Absatz 3 Buchstabe A HGB laut maßgeblichem Jahresabschluss. Sonderposten (insbesondere für Investitions- und Baukostenzuschüsse), Rückstellungen und Gesellschafterdarlehen sind nicht Teil des Eigenkapitals, und zwar auch dann nicht, wenn für ein Gesellschafterdarlehen ein Rangrücktritt vereinbart ist. „Bilanzsumme“ bezeichnet die Summe der Aktiva der Kreditnehmerin gemäß dem maßgeblichen Jahresabschluss.",
+        "einheit": "prozent",
+        "zaehler": [
+          {
+            "bezeichnung": "Eigenkapital (§ 266 Abs. 3 A HGB)",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "bilanzielles Eigenkapital laut maßgeblichem Jahresabschluss; ohne Sonderposten (insb. Investitions- und Baukostenzuschüsse), ohne Rückstellungen, ohne Gesellschafterdarlehen – auch nicht bei vereinbartem Rangrücktritt",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „Eigenkapital“",
+              "zitat": "Rückstellungen und Gesellschafterdarlehen sind nicht Teil des Eigenkapitals, und zwar auch dann nicht, wenn für ein Gesellschafterdarlehen ein Rangrücktritt vereinbart ist."
+            }
+          }
+        ],
+        "nenner": [
+          {
+            "bezeichnung": "Bilanzsumme (Summe der Aktiva)",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "unbereinigt laut maßgeblichem Jahresabschluss (Sonderposten werden nicht herausgerechnet)",
+            "fundstelle": {
+              "seite": 1,
+              "paragraph": "§ 1 Abs. 1 „Bilanzsumme“",
+              "zitat": "bezeichnet die Summe der Aktiva der Kreditnehmerin gemäß dem maßgeblichen Jahresabschluss."
+            }
+          }
+        ],
+        "richtung": "min",
+        "grenzwerte": [
+          {
+            "wert": 30.0,
+            "gueltig_ab": null,
+            "gueltig_bis": null,
+            "fundstelle": {
+              "seite": 6,
+              "paragraph": "§ 14 Abs. 1 lit. a",
+              "zitat": "a) die Eigenkapitalquote zu jedem Prüfungsstichtag nicht weniger als 30,0 % beträgt; und"
+            }
+          }
+        ],
+        "rundung_nachkommastellen": 1,
+        "fundstelle_definition": {
+          "seite": 2,
+          "paragraph": "§ 1 Abs. 1 „Eigenkapitalquote“",
+          "zitat": "bezeichnet das Verhältnis des Eigenkapitals zur Bilanzsumme zum jeweiligen Prüfungsstichtag, ausgedrückt in Prozent."
+        },
+        "hinweise": [
+          {
+            "text": "Prüfung jährlich zum 31.12. (Prüfungsstichtag), erstmals zum 31.12.2023, auf Basis des geprüften und festgestellten HGB-Einzelabschlusses.",
+            "fundstelle": {
+              "seite": 3,
+              "paragraph": "§ 1 Abs. 1 „Prüfungsstichtag“",
+              "zitat": "bezeichnet jeweils den 31. Dezember eines Jahres, erstmals den 31. Dezember 2023;"
+            }
+          },
+          {
+            "text": "Kaufmännische Rundung auf eine Nachkommastelle.",
+            "fundstelle": {
+              "seite": 7,
+              "paragraph": "§ 14 Abs. 2",
+              "zitat": "Die Eigenkapitalquote wird auf eine Nachkommastelle, der Dynamische Verschuldungsgrad auf zwei Nachkommastellen kaufmännisch gerundet."
+            }
+          },
+          {
+            "text": "Verletzung ist Kündigungsgrund.",
+            "fundstelle": {
+              "seite": 7,
+              "paragraph": "§ 16 Abs. 1 lit. b",
+              "zitat": "b) Finanzkennzahlen: Eine der Verpflichtungen nach § 14 Absatz 1 wird nicht eingehalten."
+            }
+          },
+          {
+            "text": "Planabweichung: Eine indikative Unterschreitung auf Planbasis ist kein Kündigungsgrund, verpflichtet aber auf Verlangen der Mehrheitskreditgeber zu einem Gespräch über Gegenmaßnahmen.",
+            "fundstelle": {
+              "seite": 7,
+              "paragraph": "§ 14 Abs. 3",
+              "zitat": "eine Abweichung von den Grenzwerten auf Planbasis begründet keinen Kündigungsgrund, verpflichtet die Kreditnehmerin jedoch, auf Verlangen der Mehrheitskreditgeber ein Gespräch über Gegenmaßnahmen zu führen."
+            }
+          },
+          {
+            "text": "Keine Heilung durch Eigenkapitalzuführung nach dem Prüfungsstichtag (kein Equity Cure).",
+            "fundstelle": {
+              "seite": 7,
+              "paragraph": "§ 14 Abs. 4",
+              "zitat": "(4) Eine Heilung durch Eigenkapitalzuführung nach dem Prüfungsstichtag ist ausgeschlossen."
+            }
+          },
+          {
+            "text": "Achtung: Gesellschafterdarlehen zählen auch bei Rangrücktritt nicht zum Eigenkapital, und Sonderposten sind nicht Teil des Eigenkapitals (kein anteiliger Ansatz).",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „Eigenkapital“",
+              "zitat": "Rückstellungen und Gesellschafterdarlehen sind nicht Teil des Eigenkapitals, und zwar auch dann nicht, wenn für ein Gesellschafterdarlehen ein Rangrücktritt vereinbart ist."
+            }
+          },
+          {
+            "text": "Frozen GAAP: Rechnungslegungsbegriffe sind nach den beim Jahresabschluss 2022 angewandten HGB-Grundsätzen auszulegen.",
+            "fundstelle": {
+              "seite": 3,
+              "paragraph": "§ 1 Abs. 2",
+              "zitat": "Rechnungslegungsbegriffe sind nach den Grundsätzen ordnungsmäßiger Buchführung nach HGB auszulegen, die bei Aufstellung des Jahresabschlusses für das Geschäftsjahr 2022 angewandt wurden."
+            }
+          },
+          {
+            "text": "Ein Waiver gilt nur für den jeweiligen Prüfungsstichtag.",
+            "fundstelle": {
+              "seite": 9,
+              "paragraph": "§ 19",
+              "zitat": "Ein Verzicht auf die Einhaltung der Finanzkennzahlen für einen Prüfungsstichtag gilt nur für diesen Prüfungsstichtag."
+            }
+          }
+        ]
+      },
+      {
+        "kennzahl": "Dynamischer Verschuldungsgrad",
+        "definition_wortlaut": "„Dynamischer Verschuldungsgrad“ bezeichnet für einen Prüfungszeitraum das Verhältnis der Nettofinanzverbindlichkeiten zum letzten Tag des Prüfungszeitraums zum EBITDA für diesen Prüfungszeitraum.",
+        "einheit": "faktor",
+        "zaehler": [
+          {
+            "bezeichnung": "Nettofinanzverbindlichkeiten",
+            "art": "zwischengroesse",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "zum letzten Tag des Prüfungszeitraums (31.12.); Finanzverbindlichkeiten ohne Nachrangige Gesellschafterdarlehen, abzüglich frei verfügbarer Liquider Mittel",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „Dynamischer Verschuldungsgrad“",
+              "zitat": "bezeichnet für einen Prüfungszeitraum das Verhältnis der Nettofinanzverbindlichkeiten zum letzten Tag des Prüfungszeitraums zum EBITDA für diesen Prüfungszeitraum."
+            }
+          }
+        ],
+        "nenner": [
+          {
+            "bezeichnung": "EBITDA",
+            "art": "zwischengroesse",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "für das am Prüfungsstichtag endende Geschäftsjahr",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „Dynamischer Verschuldungsgrad“",
+              "zitat": "bezeichnet für einen Prüfungszeitraum das Verhältnis der Nettofinanzverbindlichkeiten zum letzten Tag des Prüfungszeitraums zum EBITDA für diesen Prüfungszeitraum."
+            }
+          }
+        ],
+        "richtung": "max",
+        "grenzwerte": [
+          {
+            "wert": 3.5,
+            "gueltig_ab": null,
+            "gueltig_bis": null,
+            "fundstelle": {
+              "seite": 7,
+              "paragraph": "§ 14 Abs. 1 lit. b",
+              "zitat": "b) der Dynamische Verschuldungsgrad für jeden Prüfungszeitraum nicht mehr als 3,50 beträgt."
+            }
+          }
+        ],
+        "rundung_nachkommastellen": 2,
+        "fundstelle_definition": {
+          "seite": 2,
+          "paragraph": "§ 1 Abs. 1 „Dynamischer Verschuldungsgrad“",
+          "zitat": "bezeichnet für einen Prüfungszeitraum das Verhältnis der Nettofinanzverbindlichkeiten zum letzten Tag des Prüfungszeitraums zum EBITDA für diesen Prüfungszeitraum."
+        },
+        "hinweise": [
+          {
+            "text": "Kaufmännische Rundung auf zwei Nachkommastellen.",
+            "fundstelle": {
+              "seite": 7,
+              "paragraph": "§ 14 Abs. 2",
+              "zitat": "Die Eigenkapitalquote wird auf eine Nachkommastelle, der Dynamische Verschuldungsgrad auf zwei Nachkommastellen kaufmännisch gerundet."
+            }
+          },
+          {
+            "text": "Verletzung ist Kündigungsgrund.",
+            "fundstelle": {
+              "seite": 7,
+              "paragraph": "§ 16 Abs. 1 lit. b",
+              "zitat": "b) Finanzkennzahlen: Eine der Verpflichtungen nach § 14 Absatz 1 wird nicht eingehalten."
+            }
+          },
+          {
+            "text": "Planabweichung: Eine indikative Überschreitung auf Planbasis ist kein Kündigungsgrund, verpflichtet aber auf Verlangen der Mehrheitskreditgeber zu einem Gespräch über Gegenmaßnahmen.",
+            "fundstelle": {
+              "seite": 7,
+              "paragraph": "§ 14 Abs. 3",
+              "zitat": "eine Abweichung von den Grenzwerten auf Planbasis begründet keinen Kündigungsgrund, verpflichtet die Kreditnehmerin jedoch, auf Verlangen der Mehrheitskreditgeber ein Gespräch über Gegenmaßnahmen zu führen."
+            }
+          },
+          {
+            "text": "Keine Heilung durch Eigenkapitalzuführung nach dem Prüfungsstichtag.",
+            "fundstelle": {
+              "seite": 7,
+              "paragraph": "§ 14 Abs. 4",
+              "zitat": "(4) Eine Heilung durch Eigenkapitalzuführung nach dem Prüfungsstichtag ist ausgeschlossen."
+            }
+          },
+          {
+            "text": "Erträge aus der Auflösung von Sonderposten werden im EBITDA nicht bereinigt, sie bleiben also enthalten.",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 „EBITDA“",
+              "zitat": "Erträge aus der Auflösung von Sonderposten werden nicht bereinigt."
+            }
+          },
+          {
+            "text": "Nachrangige Gesellschafterdarlehen sind nicht Teil der Finanzverbindlichkeiten. Das Margenraster nach § 6 Abs. 3 nutzt dieselbe Kennzahl, dient aber nur der Preisbestimmung; die Covenant-Grenze ist allein § 14.",
+            "fundstelle": {
+              "seite": 4,
+              "paragraph": "§ 6 Abs. 4",
+              "zitat": "Die Einordnung in eine Stufe des Margenrasters begründet als solche keinen Kündigungsgrund; maßgeblich für die Einhaltung der Finanzkennzahlen ist allein § 14."
+            }
+          },
+          {
+            "text": "Abweichungen von den Rechnungslegungsgrundsätzen des Jahresabschlusses 2022 und deren Auswirkungen sind in der Compliance-Bescheinigung auszuweisen.",
+            "fundstelle": {
+              "seite": 6,
+              "paragraph": "§ 13 Abs. 3",
+              "zitat": "es sei denn, sie weist die Abweichungen und deren Auswirkungen auf die Finanzkennzahlen in der Compliance-Bescheinigung aus."
+            }
+          }
+        ]
+      }
+    ],
+    "margenraster": [
+      {
+        "kennzahl": "Dynamischer Verschuldungsgrad",
+        "ueber": null,
+        "bis_einschliesslich": 2.5,
+        "marge_prozent": 0.95,
+        "fundstelle": {
+          "seite": 4,
+          "paragraph": "§ 6 Abs. 3",
+          "zitat": "bestimmt sich die Marge nach dem in dieser Compliance-Bescheinigung ausgewiesenen Dynamischen Verschuldungsgrad wie folgt (Margenraster):"
+        }
+      },
+      {
+        "kennzahl": "Dynamischer Verschuldungsgrad",
+        "ueber": 2.5,
+        "bis_einschliesslich": 3.0,
+        "marge_prozent": 1.1,
+        "fundstelle": {
+          "seite": 4,
+          "paragraph": "§ 6 Abs. 3",
+          "zitat": "größer als 2,50 und kleiner oder gleich 3,00 1,10 %"
+        }
+      },
+      {
+        "kennzahl": "Dynamischer Verschuldungsgrad",
+        "ueber": 3.0,
+        "bis_einschliesslich": null,
+        "marge_prozent": 1.25,
+        "fundstelle": {
+          "seite": 4,
+          "paragraph": "§ 6 Abs. 3",
+          "zitat": "bestimmt sich die Marge nach dem in dieser Compliance-Bescheinigung ausgewiesenen Dynamischen Verschuldungsgrad wie folgt (Margenraster):"
+        }
+      }
+    ]
+  }
+}

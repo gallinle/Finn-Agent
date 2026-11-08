@@ -1,0 +1,166 @@
+{
+  "zuordnungen": [
+    {
+      "term_id": "EBITDA/0",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Jahresüberschuss",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die GuV-Zeile Jahresüberschuss entspricht direkt dem vertraglichen Jahresüberschuss bzw. -fehlbetrag; Erträge aus der Auflösung von Sonderposten bleiben darin enthalten."
+    },
+    {
+      "term_id": "EBITDA/1",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Steuern vom Einkommen und vom Ertrag",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "betrag"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die GuV-Zeile Steuern vom Einkommen und vom Ertrag bildet die im Jahresüberschuss berücksichtigten Ertragsteuern ab; sonstige Steuern stecken laut Hinweis in den sonstigen betrieblichen Aufwendungen."
+    },
+    {
+      "term_id": "EBITDA/2",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Zinsen und ähnliche Aufwendungen",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "betrag"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Der Vertrag stellt auf die gesamten im Jahresüberschuss berücksichtigten Zinsen und ähnlichen Aufwendungen ab, ohne die Aufzinsung von Rückstellungen auszunehmen; daher wird die vollständige GuV-Zeile übernommen."
+    },
+    {
+      "term_id": "EBITDA/3",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Sonstige Zinsen und ähnliche Erträge",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die GuV-Zeile Sonstige Zinsen und ähnliche Erträge entspricht wörtlich dem abzuziehenden Vertragsbestandteil."
+    },
+    {
+      "term_id": "EBITDA/4",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Abschreibungen auf immaterielle Vermögensgegenstände und Sachanlagen",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "betrag"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die GuV-Zeile Abschreibungen auf immaterielle Vermögensgegenstände und Sachanlagen entspricht wörtlich der vertraglichen Position."
+    },
+    {
+      "term_id": "EBITDA/5",
+      "quellen": [],
+      "nicht_im_plan": true,
+      "begruendung": "Der Erfolgsplan weist keine außerordentlichen Aufwendungen im Sinne von § 285 Nr. 31 HGB aus."
+    },
+    {
+      "term_id": "EBITDA/6",
+      "quellen": [],
+      "nicht_im_plan": true,
+      "begruendung": "Der Erfolgsplan weist keine außerordentlichen Erträge im Sinne von § 285 Nr. 31 HGB aus; Erträge aus der Auflösung von Sonderposten sind ohnehin nicht zu bereinigen."
+    },
+    {
+      "term_id": "Finanzverbindlichkeiten/0",
+      "quellen": [
+        {
+          "blatt": "Bilanz",
+          "zeile": "Verbindlichkeiten gegenüber Kreditinstituten",
+          "spalte": "31.12.2027 (Plan)",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die aufgenommenen Darlehen und Kredite bestehen laut Darlehensspiegel ausschließlich aus Bankverbindlichkeiten; das nachrangige Gesellschafterdarlehen mit qualifiziertem Rangrücktritt ist vertraglich ausgenommen und wird daher nicht einbezogen."
+    },
+    {
+      "term_id": "Finanzverbindlichkeiten/1",
+      "quellen": [],
+      "nicht_im_plan": true,
+      "begruendung": "Plan und Darlehensspiegel weisen keine Anleihen, Schuldverschreibungen oder Schuldscheindarlehen aus."
+    },
+    {
+      "term_id": "Finanzverbindlichkeiten/2",
+      "quellen": [],
+      "nicht_im_plan": true,
+      "begruendung": "Laut Bilanzerläuterung besteht nur nicht bilanziertes Operating Leasing, sodass keine nach HGB bilanzierte Finanzierungsleasingverbindlichkeit vorliegt."
+    },
+    {
+      "term_id": "Finanzverbindlichkeiten/3",
+      "quellen": [],
+      "nicht_im_plan": true,
+      "begruendung": "Der Plan weist keine Verbindlichkeiten aus Forderungsverkäufen mit Rückgriff aus."
+    },
+    {
+      "term_id": "Finanzverbindlichkeiten/4",
+      "quellen": [],
+      "nicht_im_plan": true,
+      "begruendung": "Neben den Bankdarlehen und dem ausgenommenen nachrangigen Gesellschafterdarlehen weist der Plan keine sonstigen kreditähnlichen Geschäfte aus; die sonstigen Verbindlichkeiten sind unverzinsliche Steuer- und Sozialverbindlichkeiten."
+    },
+    {
+      "term_id": "Nettofinanzverbindlichkeiten/1",
+      "quellen": [
+        {
+          "blatt": "Bilanz",
+          "zeile": "Kassenbestand und Guthaben bei Kreditinstituten",
+          "spalte": "31.12.2027 (Plan)",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die Bilanzzeile Kassenbestand und Guthaben bei Kreditinstituten ist laut Erläuterung 3 frei verfügbar und unverpfändet und entspricht damit der vertraglichen Definition."
+    },
+    {
+      "term_id": "Eigenkapitalquote/zaehler/0",
+      "quellen": [
+        {
+          "blatt": "Bilanz",
+          "zeile": "A. Eigenkapital",
+          "spalte": "31.12.2027 (Plan)",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die Bilanzposition A. Eigenkapital entspricht § 266 Abs. 3 A HGB; Sonderposten, Rückstellungen und das Gesellschafterdarlehen sind darin nicht enthalten."
+    },
+    {
+      "term_id": "Eigenkapitalquote/nenner/0",
+      "quellen": [
+        {
+          "blatt": "Bilanz",
+          "zeile": "Summe Aktiva (Bilanzsumme)",
+          "spalte": "31.12.2027 (Plan)",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Die unbereinigte Summe der Aktiva laut Planbilanz entspricht der vertraglichen Bilanzsumme."
+    }
+  ]
+}

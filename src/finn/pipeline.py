@@ -19,6 +19,7 @@ from imap_tools import MailMessage
 from finn.calc.covenants import VertragsErgebnis, berechne_vertrag
 from finn.config import PROJEKT_ROOT, Config, lade_config
 from finn.dienste import Dienste, OfflineDienste
+from finn.extraction import verify
 from finn.mail.outbox import Antwort, baue_email
 from finn.plan.wirtschaftsplan import lade_plan
 from finn.report import summary
@@ -92,10 +93,19 @@ def pruefe(msg: MailMessage, dienste: Dienste, cfg: Config) -> Lauf:
     if not pdfs:
         raise RuntimeError(f"Keine Vertrags-PDFs in {cfg.vertraege_dir}")
     ergebnisse = []
+    nicht_gefunden: set[tuple[int, str]] = set()
+    hinweise: list[str] = []
     for pdf in pdfs:
         daten = pdf.read_bytes()
         vertrag = dienste.extrahiere(daten, pdf.name)
         log.info("%s: %d Covenant(s)", pdf.name, len(vertrag.covenants))
+        # Zitate gegen das PDF prüfen (pymupdf)
+        for p in verify.pruefe_vertrag(daten, vertrag):
+            if not p.gefunden:
+                nicht_gefunden.add((p.seite, p.zitat))
+                ort = f" (steht auf S. {p.gefunden_auf})" if p.gefunden_auf else ""
+                hinweise.append(f"{pdf.name}: Zitat „{p.zitat}“ nicht auf S. {p.seite} gefunden{ort}.")
+        hinweise += [f"{pdf.name}: {w}" for w in verify.pruefe_grenzwerte(vertrag)]
         zuordnung = dienste.ordne_zu(vertrag, plan, pdf.name)
         ergebnisse.append(berechne_vertrag(pdf.name, vertrag, zuordnung, plan, cfg.stichtag))
 
@@ -103,7 +113,8 @@ def pruefe(msg: MailMessage, dienste: Dienste, cfg: Config) -> Lauf:
     fakten = summary.fakten(ergebnisse)
     text = dienste.fasse_zusammen(ergebnisse, fakten)
     if text:
-        fremd = summary.pruefe_zahlen(text, summary.erlaubte_zahlen(ergebnisse, cfg.stichtag),
+        fremd = summary.pruefe_zahlen(summary.ohne_namen(text, ergebnisse),
+                                      summary.erlaubte_zahlen(ergebnisse, cfg.stichtag),
                                       cfg.stichtag)
         if fremd:
             log.warning("Zusammenfassung verworfen, unbelegte Zahlen: %s", fremd)
@@ -112,7 +123,9 @@ def pruefe(msg: MailMessage, dienste: Dienste, cfg: Config) -> Lauf:
         text = summary.fallback(ergebnisse, cfg.stichtag)
 
     # 6. Rendern
-    html, plain = render(ergebnisse, text, cfg.stichtag, anhang.filename)
+    log.info("Zitate: %d nicht verifiziert", len(nicht_gefunden))
+    html, plain = render(ergebnisse, text, cfg.stichtag, anhang.filename,
+                         nicht_gefunden=nicht_gefunden, hinweise=hinweise)
     return Lauf(Antwort(html=html, text=plain, **huelle), ergebnisse)
 
 

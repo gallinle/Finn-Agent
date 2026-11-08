@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "datei": "Vertrag_3_Landesbank_Investitionsdarlehen.pdf",
+  "modell": "claude-opus-5-5",
+  "vertrag": {
+    "vertragsname": "Landesbank Mittelland – Investitionsdarlehen Nr. LBM-INV-2025-0412",
+    "hat_financial_covenants": true,
+    "begruendung": "§ 13 Abs. 1 verpflichtet die Kreditnehmerin, für jedes Geschäftsjahr einen Schuldendienstdeckungsgrad von mindestens 1,30 einzuhalten. Die Definition steht in Anlage 3. Eine Verletzung ohne Heilung berechtigt die Bank nach § 15 Abs. 1 lit. b) zur fristlosen Kündigung. Ein Margenraster gibt es nicht: Für Tranche B gilt eine feste Marge von 1,05 % p. a. auf den Swapsatz, Tranche A hat einen Festzins.",
+    "begruendung_fundstelle": {
+      "seite": 5,
+      "paragraph": "§ 13 Abs. 1",
+      "zitat": "Die Kreditnehmerin verpflichtet sich, für jedes Geschäftsjahr während der Laufzeit dieses Vertrages einen Schuldendienstdeckungsgrad von mindestens 1,30 einzuhalten."
+    },
+    "zwischengroessen": [
+      {
+        "name": "EBITDA",
+        "terme": [
+          {
+            "bezeichnung": "Jahresüberschuss bzw. Jahresfehlbetrag",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "gemäß Gewinn- und Verlustrechnung für den Berechnungszeitraum (Geschäftsjahr)",
+            "fundstelle": {
+              "seite": 13,
+              "paragraph": "Anlage 3 Abs. 2",
+              "zitat": "EBITDA bezeichnet für den Berechnungszeitraum den Jahresüberschuss bzw. Jahresfehlbetrag der Kreditnehmerin gemäß Gewinn- und Verlustrechnung"
+            }
+          },
+          {
+            "bezeichnung": "Steuern vom Einkommen und vom Ertrag",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": null,
+            "fundstelle": {
+              "seite": 13,
+              "paragraph": "Anlage 3 Abs. 2 lit. a",
+              "zitat": "zuzüglich der Steuern vom Einkommen und vom Ertrag,"
+            }
+          },
+          {
+            "bezeichnung": "Zinsen und ähnliche Aufwendungen",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "gesamte GuV-Position (anders als im Schuldendienst ohne Ausschluss der Aufzinsung von Rückstellungen)",
+            "fundstelle": {
+              "seite": 13,
+              "paragraph": "Anlage 3 Abs. 2 lit. b",
+              "zitat": "b) zuzüglich der Zinsen und ähnlichen Aufwendungen, c) abzüglich der sonstigen Zinsen und ähnlichen Erträge,"
+            }
+          },
+          {
+            "bezeichnung": "Sonstige Zinsen und ähnliche Erträge",
+            "art": "planposition",
+            "vorzeichen": -1,
+            "faktor": 1.0,
+            "hinweis": null,
+            "fundstelle": {
+              "seite": 13,
+              "paragraph": "Anlage 3 Abs. 2 lit. c",
+              "zitat": "b) zuzüglich der Zinsen und ähnlichen Aufwendungen, c) abzüglich der sonstigen Zinsen und ähnlichen Erträge,"
+            }
+          },
+          {
+            "bezeichnung": "Abschreibungen auf immaterielle Vermögensgegenstände des Anlagevermögens und Sachanlagen",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": null,
+            "fundstelle": {
+              "seite": 13,
+              "paragraph": "Anlage 3 Abs. 2 lit. d",
+              "zitat": "zuzüglich der Abschreibungen auf immaterielle Vermögensgegenstände des Anlagevermögens und Sachanlagen,"
+            }
+          },
+          {
+            "bezeichnung": "Außerordentliche Aufwendungen",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "nur soweit im Anhang gemäß § 285 Nr. 31 HGB gesondert angegeben",
+            "fundstelle": {
+              "seite": 13,
+              "paragraph": "Anlage 3 Abs. 2 lit. e",
+              "zitat": "zuzüglich bzw. abzüglich außerordentlicher Aufwendungen bzw. Erträge, soweit diese im Anhang des Jahresabschlusses gemäß § 285 Nr. 31 HGB gesondert angegeben sind"
+            }
+          },
+          {
+            "bezeichnung": "Außerordentliche Erträge",
+            "art": "planposition",
+            "vorzeichen": -1,
+            "faktor": 1.0,
+            "hinweis": "nur soweit im Anhang gemäß § 285 Nr. 31 HGB gesondert angegeben",
+            "fundstelle": {
+              "seite": 13,
+              "paragraph": "Anlage 3 Abs. 2 lit. e",
+              "zitat": "zuzüglich bzw. abzüglich außerordentlicher Aufwendungen bzw. Erträge, soweit diese im Anhang des Jahresabschlusses gemäß § 285 Nr. 31 HGB gesondert angegeben sind"
+            }
+          }
+        ],
+        "fundstelle": {
+          "seite": 13,
+          "paragraph": "Anlage 3 Abs. 2",
+          "zitat": "EBITDA bezeichnet für den Berechnungszeitraum den Jahresüberschuss bzw. Jahresfehlbetrag der Kreditnehmerin gemäß Gewinn- und Verlustrechnung"
+        }
+      },
+      {
+        "name": "Schuldendienst",
+        "terme": [
+          {
+            "bezeichnung": "Zinsaufwand für Finanzverbindlichkeiten",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "Ohne Zinsaufwendungen aus der Aufzinsung von Rückstellungen (insbesondere Pensionsrückstellungen). Finanzverbindlichkeiten umfassen Bankdarlehen, Schuldscheine/Anleihen, Finanzierungsleasing (soweit nach HGB bilanziert) sowie Gesellschafter- und Drittdarlehen, ausdrücklich auch bei vereinbartem Rangrücktritt. Keine Finanzverbindlichkeiten sind Verbindlichkeiten aus Lieferungen und Leistungen sowie Rückstellungen.",
+            "fundstelle": {
+              "seite": 13,
+              "paragraph": "Anlage 3 Abs. 4 lit. a",
+              "zitat": "dem Zinsaufwand für Finanzverbindlichkeiten; Zinsaufwendungen aus der Aufzinsung von Rückstellungen (insbesondere Pensionsrückstellungen) sind nicht einzubeziehen"
+            }
+          },
+          {
+            "bezeichnung": "Planmäßige Tilgungsleistungen auf Finanzverbindlichkeiten",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "Nur die im Berechnungszeitraum fälligen planmäßigen Tilgungen. Ausgenommen sind freiwillige Sondertilgungen, vorzeitige Rückzahlungen, aus Refinanzierung geleistete Rückzahlungen sowie Endfälligkeitsbeträge (Bullet), soweit refinanziert. Finanzverbindlichkeiten schließen Gesellschafterdarlehen trotz Rangrücktritt ein.",
+            "fundstelle": {
+              "seite": 13,
+              "paragraph": "Anlage 3 Abs. 4 lit. b",
+              "zitat": "den im Berechnungszeitraum fälligen planmäßigen Tilgungsleistungen auf Finanzverbindlichkeiten. Nicht einzubeziehen sind freiwillige Sondertilgungen, vorzeitige Rückzahlungen"
+            }
+          }
+        ],
+        "fundstelle": {
+          "seite": 13,
+          "paragraph": "Anlage 3 Abs. 4",
+          "zitat": "Schuldendienst bezeichnet für den Berechnungszeitraum die Summe aus"
+        }
+      }
+    ],
+    "covenants": [
+      {
+        "kennzahl": "Schuldendienstdeckungsgrad (DSCR)",
+        "definition_wortlaut": "Der Schuldendienstdeckungsgrad (Debt Service Coverage Ratio, DSCR) ist der Quotient aus a) EBITDA abzüglich Ertragsteuern (Zähler) und b) Schuldendienst (Nenner), jeweils für denselben Berechnungszeitraum. Der Schuldendienstdeckungsgrad ist auf zwei Nachkommastellen kaufmännisch zu runden.",
+        "einheit": "faktor",
+        "zaehler": [
+          {
+            "bezeichnung": "EBITDA",
+            "art": "zwischengroesse",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": null,
+            "fundstelle": {
+              "seite": 13,
+              "paragraph": "Anlage 3 Abs. 6 lit. a",
+              "zitat": "Der Schuldendienstdeckungsgrad (Debt Service Coverage Ratio, DSCR) ist der Quotient aus a) EBITDA abzüglich Ertragsteuern (Zähler) und b) Schuldendienst (Nenner),"
+            }
+          },
+          {
+            "bezeichnung": "Ertragsteuern (Steuern vom Einkommen und vom Ertrag)",
+            "art": "planposition",
+            "vorzeichen": -1,
+            "faktor": 1.0,
+            "hinweis": "die in der GuV für den Berechnungszeitraum ausgewiesenen Steuern vom Einkommen und vom Ertrag",
+            "fundstelle": {
+              "seite": 13,
+              "paragraph": "Anlage 3 Abs. 5",
+              "zitat": "Ertragsteuern bezeichnet die in der Gewinn- und Verlustrechnung für den Berechnungszeitraum ausgewiesenen Steuern vom Einkommen und vom Ertrag"
+            }
+          }
+        ],
+        "nenner": [
+          {
+            "bezeichnung": "Schuldendienst",
+            "art": "zwischengroesse",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": null,
+            "fundstelle": {
+              "seite": 13,
+              "paragraph": "Anlage 3 Abs. 6 lit. b",
+              "zitat": "Der Schuldendienstdeckungsgrad (Debt Service Coverage Ratio, DSCR) ist der Quotient aus a) EBITDA abzüglich Ertragsteuern (Zähler) und b) Schuldendienst (Nenner),"
+            }
+          }
+        ],
+        "richtung": "min",
+        "grenzwerte": [
+          {
+            "wert": 1.3,
+            "gueltig_ab": null,
+            "gueltig_bis": null,
+            "fundstelle": {
+              "seite": 5,
+              "paragraph": "§ 13 Abs. 1",
+              "zitat": "Die Kreditnehmerin verpflichtet sich, für jedes Geschäftsjahr während der Laufzeit dieses Vertrages einen Schuldendienstdeckungsgrad von mindestens 1,30 einzuhalten."
+            }
+          }
+        ],
+        "rundung_nachkommastellen": 2,
+        "fundstelle_definition": {
+          "seite": 13,
+          "paragraph": "Anlage 3 Abs. 6",
+          "zitat": "Der Schuldendienstdeckungsgrad (Debt Service Coverage Ratio, DSCR) ist der Quotient aus a) EBITDA abzüglich Ertragsteuern (Zähler) und b) Schuldendienst (Nenner),"
+        },
+        "hinweise": [
+          {
+            "text": "Prüfung jährlich für das abgelaufene Geschäftsjahr auf Basis des festgestellten HGB-Einzelabschlusses. Der Nachweis erfolgt per Kennzahlenbescheinigung zusammen mit dem Jahresabschluss (spätestens 180 Tage nach Geschäftsjahresende). Die erste Prüfung betrifft das Geschäftsjahr 2025.",
+            "fundstelle": {
+              "seite": 5,
+              "paragraph": "§ 13 Abs. 2",
+              "zitat": "durch die Kennzahlenbescheinigung nach § 12 Absatz 1 lit. b) nachgewiesen. Die erste Prüfung erfolgt"
+            }
+          },
+          {
+            "text": "Planbasis: Mit dem Wirtschaftsplan (bis 15.12.) ist der erwartete DSCR zu übermitteln. Weist die Planberechnung weniger als 1,30 aus, muss die Kreditnehmerin innerhalb von 30 Tagen Maßnahmen zur Einhaltung darlegen. Das ist kein Kündigungsgrund, sondern eine Darlegungspflicht.",
+            "fundstelle": {
+              "seite": 6,
+              "paragraph": "§ 13 Abs. 3",
+              "zitat": "übermittelte Planberechnung einen Schuldendienstdeckungsgrad von weniger als 1,30 aus, wird die Kreditnehmerin der Bank innerhalb von 30 Tagen darlegen"
+            }
+          },
+          {
+            "text": "Für die Planberechnung sind die Planwerte des Wirtschaftsplans (Erfolgsplan und Finanzplan bzw. Darlehensspiegel) des jeweiligen Planjahres zugrunde zu legen.",
+            "fundstelle": {
+              "seite": 13,
+              "paragraph": "Anlage 3 Abs. 7",
+              "zitat": "Für die Berechnung nach § 12 Absatz 1 lit. c) und § 13 Absatz 3 sind die Planwerte des Wirtschaftsplans"
+            }
+          },
+          {
+            "text": "Heilung (Equity Cure): Innerhalb von 30 Tagen nach Vorlage der Kennzahlenbescheinigung kann Eigenkapital zugeführt werden, das rechnerisch dem Zähler hinzugerechnet wird.",
+            "fundstelle": {
+              "seite": 6,
+              "paragraph": "§ 13 Abs. 4",
+              "zitat": "Ein Unterschreiten des Mindestwertes nach Absatz 1 gilt als geheilt, wenn die Kreditnehmerin innerhalb von 30 Tagen nach Vorlage der Kennzahlenbescheinigung Eigenkapital"
+            }
+          },
+          {
+            "text": "Die Heilung ist höchstens zweimal während der Laufzeit zulässig und nicht in aufeinanderfolgenden Geschäftsjahren.",
+            "fundstelle": {
+              "seite": 6,
+              "paragraph": "§ 13 Abs. 4",
+              "zitat": "Eine Heilung ist höchstens zweimal während der Laufzeit und nicht in aufeinanderfolgenden Geschäftsjahren zulässig."
+            }
+          },
+          {
+            "text": "Rechtsfolge: Ein Verstoß gegen § 13 Abs. 1 ohne Heilung berechtigt die Bank zur fristlosen Kündigung und sofortigen Fälligstellung.",
+            "fundstelle": {
+              "seite": 7,
+              "paragraph": "§ 15 Abs. 1 lit. b",
+              "zitat": "die Kreditnehmerin die Verpflichtung nach § 13 Absatz 1 verletzt und keine Heilung nach § 13 Absatz 4 erfolgt;"
+            }
+          },
+          {
+            "text": "Auszahlungsvoraussetzung für Tranche B: Die Kennzahlenbescheinigung für das Geschäftsjahr 2025 muss vorliegen, und der darin ausgewiesene DSCR muss § 13 erfüllen.",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 4 Abs. 3",
+              "zitat": "Voraussetzung für die Auszahlung der Tranche B ist zusätzlich, dass der Bank die Kennzahlenbescheinigung für das Geschäftsjahr 2025 vorliegt"
+            }
+          },
+          {
+            "text": "Besonderheit der Definition: Finanzverbindlichkeiten schließen Gesellschafterdarlehen ausdrücklich auch bei vereinbartem Rangrücktritt ein. Deren Zinsen und planmäßige Tilgungen zählen daher zum Schuldendienst.",
+            "fundstelle": {
+              "seite": 13,
+              "paragraph": "Anlage 3 Abs. 3",
+              "zitat": "Darlehen von Gesellschaftern und sonstigen Dritten, und zwar unabhängig davon, ob für diese Darlehen ein Rangrücktritt vereinbart ist"
+            }
+          }
+        ]
+      }
+    ],
+    "margenraster": []
+  }
+}

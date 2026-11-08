@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "datei": "Vertrag_2_Foerderbank_Foerderdarlehen.pdf",
+  "modell": "claude-opus-5-5",
+  "vertrag": {
+    "vertragsname": "Förderbank Musterland – Förderdarlehen KIE Nr. FD-2022-08817",
+    "hat_financial_covenants": true,
+    "begruendung": "§ 13 Abs. 1 verpflichtet die Kreditnehmerin, zu jedem Bilanzstichtag eine Wirtschaftliche Eigenkapitalquote von mindestens 27,5 % einzuhalten. Eine Unterschreitung berechtigt zur Besicherungsforderung bzw. Kündigung (§ 13 Abs. 4, § 15 Abs. 1 lit. d). Ein Margenraster existiert nicht: Der Sollzinssatz ist für die gesamte Laufzeit fest (§ 6 Abs. 1).",
+    "begruendung_fundstelle": {
+      "seite": 6,
+      "paragraph": "§ 13 Abs. 1",
+      "zitat": "zu jedem Bilanzstichtag eine Wirtschaftliche Eigenkapitalquote von mindestens 27,5 % einzuhalten."
+    },
+    "zwischengroessen": [
+      {
+        "name": "Wirtschaftliches Eigenkapital",
+        "terme": [
+          {
+            "bezeichnung": "Eigenkapital",
+            "art": "zwischengroesse",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": null,
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 (Wirtschaftliches Eigenkapital)",
+              "zitat": "bezeichnet das Eigenkapital zuzüglich 50 % (fünfzig Prozent) der Sonderposten."
+            }
+          },
+          {
+            "bezeichnung": "Sonderposten für Investitionszuschüsse und Baukostenzuschüsse (einschließlich Netzanschlusskostenbeiträgen)",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 0.5,
+            "hinweis": "Nur 50 % anzurechnen; umfasst alle gesondert ausgewiesenen Sonderposten für Investitions- und Baukostenzuschüsse einschließlich Netzanschlusskostenbeiträgen, unabhängig von ihrer Bezeichnung im Einzelfall.",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 (Sonderposten)",
+              "zitat": "bezeichnet die in der Bilanz der Kreditnehmerin gesondert ausgewiesenen Sonderposten für Investitionszuschüsse und Baukostenzuschüsse (einschließlich Netzanschlusskostenbeiträgen)"
+            }
+          }
+        ],
+        "fundstelle": {
+          "seite": 2,
+          "paragraph": "§ 1 Abs. 1 (Wirtschaftliches Eigenkapital)",
+          "zitat": "Gesellschafterdarlehen, Rückstellungen und sonstige Fremdkapitalpositionen werden dem Wirtschaftlichen Eigenkapital nicht zugerechnet, auch wenn für sie ein Rangrücktritt vereinbart ist."
+        }
+      },
+      {
+        "name": "Eigenkapital",
+        "terme": [
+          {
+            "bezeichnung": "Eigenkapital gemäß § 266 Abs. 3 Buchstabe A HGB (gezeichnetes Kapital, Kapitalrücklage, Gewinnrücklagen, Gewinn-/Verlustvortrag, Jahresüberschuss/Jahresfehlbetrag bzw. Bilanzgewinn/Bilanzverlust)",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "Ohne Gesellschafterdarlehen, Rückstellungen und sonstige Fremdkapitalpositionen, auch wenn für sie ein Rangrücktritt vereinbart ist.",
+            "fundstelle": {
+              "seite": 1,
+              "paragraph": "§ 1 Abs. 1 (Eigenkapital)",
+              "zitat": "bezeichnet das in der Bilanz der Kreditnehmerin gemäß § 266 Absatz 3 Buchstabe A HGB ausgewiesene Eigenkapital"
+            }
+          },
+          {
+            "bezeichnung": "Eingeforderte, aber noch nicht eingezahlte Einlagen",
+            "art": "planposition",
+            "vorzeichen": -1,
+            "faktor": 1.0,
+            "hinweis": null,
+            "fundstelle": {
+              "seite": 1,
+              "paragraph": "§ 1 Abs. 1 (Eigenkapital)",
+              "zitat": "Gewinn-/Verlustvortrag und Jahresüberschuss/Jahresfehlbetrag bzw. Bilanzgewinn/Bilanzverlust), abzüglich eingeforderter, aber noch nicht eingezahlter Einlagen."
+            }
+          }
+        ],
+        "fundstelle": {
+          "seite": 1,
+          "paragraph": "§ 1 Abs. 1 (Eigenkapital)",
+          "zitat": "bezeichnet das in der Bilanz der Kreditnehmerin gemäß § 266 Absatz 3 Buchstabe A HGB ausgewiesene Eigenkapital"
+        }
+      }
+    ],
+    "covenants": [
+      {
+        "kennzahl": "Wirtschaftliche Eigenkapitalquote",
+        "definition_wortlaut": "„Wirtschaftliche Eigenkapitalquote“ bezeichnet das Verhältnis des Wirtschaftlichen Eigenkapitals zur Bilanzsumme zum jeweiligen Bilanzstichtag, ausgedrückt in Prozent. „Wirtschaftliches Eigenkapital“ bezeichnet das Eigenkapital zuzüglich 50 % (fünfzig Prozent) der Sonderposten. Gesellschafterdarlehen, Rückstellungen und sonstige Fremdkapitalpositionen werden dem Wirtschaftlichen Eigenkapital nicht zugerechnet, auch wenn für sie ein Rangrücktritt vereinbart ist.",
+        "einheit": "prozent",
+        "zaehler": [
+          {
+            "bezeichnung": "Wirtschaftliches Eigenkapital",
+            "art": "zwischengroesse",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "Gesellschafterdarlehen, Rückstellungen und sonstige Fremdkapitalpositionen nicht zurechenbar, auch bei Rangrücktritt.",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 1 (Wirtschaftliche Eigenkapitalquote)",
+              "zitat": "bezeichnet das Verhältnis des Wirtschaftlichen Eigenkapitals zur Bilanzsumme zum jeweiligen Bilanzstichtag, ausgedrückt in Prozent."
+            }
+          }
+        ],
+        "nenner": [
+          {
+            "bezeichnung": "Bilanzsumme (Summe der Aktiva)",
+            "art": "planposition",
+            "vorzeichen": 1,
+            "faktor": 1.0,
+            "hinweis": "Gemäß festgestelltem Jahresabschluss nach § 12 Abs. 1 lit. a zum jeweiligen Bilanzstichtag.",
+            "fundstelle": {
+              "seite": 1,
+              "paragraph": "§ 1 Abs. 1 (Bilanzsumme)",
+              "zitat": "bezeichnet die Summe der Aktiva gemäß dem nach § 12 Absatz 1 lit. a) vorzulegenden festgestellten Jahresabschluss der Kreditnehmerin"
+            }
+          }
+        ],
+        "richtung": "min",
+        "grenzwerte": [
+          {
+            "wert": 27.5,
+            "gueltig_ab": null,
+            "gueltig_bis": null,
+            "fundstelle": {
+              "seite": 6,
+              "paragraph": "§ 13 Abs. 1",
+              "zitat": "zu jedem Bilanzstichtag eine Wirtschaftliche Eigenkapitalquote von mindestens 27,5 % einzuhalten."
+            }
+          }
+        ],
+        "rundung_nachkommastellen": null,
+        "fundstelle_definition": {
+          "seite": 2,
+          "paragraph": "§ 1 Abs. 1 (Wirtschaftliche Eigenkapitalquote)",
+          "zitat": "bezeichnet das Verhältnis des Wirtschaftlichen Eigenkapitals zur Bilanzsumme zum jeweiligen Bilanzstichtag, ausgedrückt in Prozent."
+        },
+        "hinweise": [
+          {
+            "text": "Prüfung jährlich auf Basis des festgestellten Jahresabschlusses und der Kennzahlenbescheinigung (Anlage 2), erstmals zum 31.12.2022; Einhaltung während der gesamten Laufzeit zu jedem Bilanzstichtag.",
+            "fundstelle": {
+              "seite": 6,
+              "paragraph": "§ 13 Abs. 2",
+              "zitat": "Kennzahlenbescheinigung nach § 12 Absatz 1 lit. b) überprüft, erstmals zum Bilanzstichtag 31. Dezember 2022."
+            }
+          },
+          {
+            "text": "Planabweichung: Zeigt die Vorschau auf Basis der Planbilanz eine voraussichtliche Unterschreitung, sind lediglich Gespräche über Maßnahmen aufzunehmen; die Vorschau allein ist kein Kündigungsgrund.",
+            "fundstelle": {
+              "seite": 6,
+              "paragraph": "§ 13 Abs. 3",
+              "zitat": "Eine solche Vorschau begründet für sich genommen keinen Kündigungsgrund."
+            }
+          },
+          {
+            "text": "Vorschau der Quote zum Ende des Geschäftsjahres auf Basis der Planbilanz ist mit dem Wirtschaftsplan bis 31. Januar vorzulegen.",
+            "fundstelle": {
+              "seite": 5,
+              "paragraph": "§ 12 Abs. 1 lit. c",
+              "zitat": "zusammen mit einer Vorschau der Wirtschaftlichen Eigenkapitalquote zum Ende dieses Geschäftsjahres auf Basis der Planbilanz"
+            }
+          },
+          {
+            "text": "Rechtsfolge einer Unterschreitung: Förderbank kann angemessene Besicherung verlangen oder nach § 15 Abs. 1 lit. d kündigen.",
+            "fundstelle": {
+              "seite": 6,
+              "paragraph": "§ 13 Abs. 4",
+              "zitat": "Bei einer Unterschreitung der Mindestquote ist die Förderbank berechtigt, (a) eine angemessene Besicherung zu verlangen oder"
+            }
+          },
+          {
+            "text": "Heilung: Kündigungsrecht nur, wenn die Kreditnehmerin nicht innerhalb von 60 Tagen nach Aufforderung die verlangte Sicherheit stellt.",
+            "fundstelle": {
+              "seite": 7,
+              "paragraph": "§ 15 Abs. 1 lit. d",
+              "zitat": "Absatz 1 unterschreitet und die Kreditnehmerin nicht innerhalb von 60 Tagen nach Aufforderung eine nach § 13 Absatz 4 lit. a) verlangte Sicherheit stellt"
+            }
+          },
+          {
+            "text": "Bei Kündigung kann zusätzlich – auch rückwirkend – die Zinsverbilligung widerrufen werden.",
+            "fundstelle": {
+              "seite": 6,
+              "paragraph": "§ 15 Abs. 1",
+              "zitat": "Die Förderbank kann das Darlehen ganz oder teilweise fristlos kündigen und – auch rückwirkend – die Zinsverbilligung widerrufen"
+            }
+          },
+          {
+            "text": "Bilanzposten nach HGB unter Beibehaltung der bei Vertragsabschluss angewandten Bilanzierungs- und Bewertungsmethoden (frozen GAAP).",
+            "fundstelle": {
+              "seite": 2,
+              "paragraph": "§ 1 Abs. 2",
+              "zitat": "unter Beibehaltung der bei Abschluss dieses Vertrages angewandten Bilanzierungs- und Bewertungsmethoden zu ermitteln."
+            }
+          }
+        ]
+      }
+    ],
+    "margenraster": []
+  }
+}

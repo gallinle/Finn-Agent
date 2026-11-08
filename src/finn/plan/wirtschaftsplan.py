@@ -8,7 +8,7 @@ im Darlehensspiegel die Messgrößen des Planjahres ("Zinsaufwand 2027", ...).
 from __future__ import annotations
 
 import io
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from decimal import Decimal
 
 import openpyxl
@@ -27,6 +27,7 @@ class Zelle:
 @dataclass
 class Planindex:
     blaetter: dict[str, dict[str, dict[str, Zelle]]]
+    notizen: dict[str, list[str]] = field(default_factory=dict)  # Texte ohne Zahlen je Blatt
 
     def get(self, blatt: str, zeile: str, spalte: str) -> Zelle:
         try:
@@ -62,8 +63,17 @@ def lade_plan(daten: bytes) -> Planindex:
         raise PlanFehler(f"Excel-Datei konnte nicht gelesen werden: {e}") from e
 
     blaetter: dict[str, dict[str, dict[str, Zelle]]] = {}
+    notizen: dict[str, list[str]] = {}
     for ws in wb.worksheets:
         rows = [list(r) for r in ws.iter_rows()]
+        texte_ohne_zahl = [
+            " ".join(r[0].value.split())
+            for r in rows
+            if r and isinstance(r[0].value, str) and r[0].value.strip()
+            and not any(_ist_zahl(c.value) for c in r[1:])
+        ]
+        if texte_ohne_zahl:
+            notizen[ws.title] = texte_ohne_zahl
         kopf_idx = None
         for i, row in enumerate(rows[:15]):
             texte = [c for c in row[1:] if isinstance(c.value, str) and c.value.strip()]
@@ -97,4 +107,4 @@ def lade_plan(daten: bytes) -> Planindex:
     wb.close()
     if not blaetter:
         raise PlanFehler("Die Excel-Datei enthält keine Tabellen mit Planwerten.")
-    return Planindex(blaetter)
+    return Planindex(blaetter, notizen)

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "datei": "Vertrag_1_Sparkasse_Investitionsdarlehen.pdf",
+  "modell": "claude-opus-5-5",
+  "vertrag": {
+    "vertragsname": "Sparkasse Musterstadt – Investitionsdarlehen Nr. 4471 203 118",
+    "hat_financial_covenants": false,
+    "begruendung": "Der Vertrag enthält keine Financial Covenants, also keine Finanzkennzahl mit einem einzuhaltenden Mindest- oder Höchstwert, an deren Verletzung Rechtsfolgen geknüpft sind. Die Eigenkapitalquote von 28,4 % und der dynamische Verschuldungsgrad von 2,9 werden nur in der Präambel als historische Werte zum 31.12.2019 genannt. Sie sind Grundlage der Kreditentscheidung, aber keine Auflage. Auch die übrigen Stellen begründen keinen Covenant: § 15 Abs. 1 lit. e (wesentliche Verschlechterung der Vermögensverhältnisse) ist eine qualitative Klausel; dasselbe gilt für § 10 Abs. 4 (Verstärkung von Sicherheiten nach Nr. 22 AGB-Sparkassen). § 14 Abs. 1 ist eine Negativerklärung, § 15 Abs. 1 lit. g eine Drittverzugsklausel. Die 10-%-Schwelle in § 14 Abs. 3 grenzt nur zustimmungspflichtige Veräußerungen ab und ist keine Finanzkennzahl. Ein Margenraster besteht nicht: Bis zum 30.03.2031 gilt ein fester Sollzinssatz von 2,80 % p. a. (§ 6 Abs. 1). Danach greift ohne neue Vereinbarung eine feste Marge von 1,10 % p. a. über dem 3-Monats-EURIBOR (§ 6 Abs. 3), die nicht von Kennzahlen abhängt.",
+    "begruendung_fundstelle": {
+      "seite": 1,
+      "paragraph": "Präambel",
+      "zitat": "Zum 31. Dezember 2019 wies die Kreditnehmerin eine bilanzielle Eigenkapitalquote von 28,4 % und einen dynamischen Verschuldungsgrad"
+    },
+    "zwischengroessen": [],
+    "covenants": [],
+    "margenraster": []
+  }
+}
