@@ -1,15 +1,16 @@
 # UML – Finn
 
-Drei Sichten auf das System. GitHub rendert die Mermaid-Blöcke direkt; lokal z. B. mit dem
+Vier Sichten auf das System. GitHub rendert die Mermaid-Blöcke direkt; lokal z. B. mit dem
 Mermaid-Plugin in PyCharm.
 
-1. **Komponenten** – wer mit wem arbeitet (Pipeline, Dienste, Mail)
+1. **Komponenten** – wer mit wem arbeitet (Schleife, Postfach, Pipeline, Dienste)
 2. **Datenmodell** – was Claude liefert (Schema) und was der Code daraus berechnet
 3. **Ablauf** – Sequenz einer Auftrags-Mail bis zur Antwort
+4. **Lebenslauf einer Mail** – Zustände inkl. Wiederholungen, Aufgeben und Spam-Ordner
 
 ## 1. Komponenten (Klassendiagramm)
 
-Module ohne eigene Klasse sind als `<<module>>` mit ihren öffentlichen Funktionen dargestellt.
+Module ohne eigene Klasse sind als `<<module>>` mit ihren wichtigsten Funktionen dargestellt.
 
 ```mermaid
 classDiagram
@@ -20,17 +21,22 @@ classDiagram
         +main(argv) int
         +bearbeite_neue(postfach, dienste, cfg, sende, zustand) int
         +ist_automatisch(msg) str
-        -_schleife(...) int
+        +mail_id(msg) str
+        -_bearbeite_eine(msg, ...) int
+        -_schleife(..., postfach_fabrik) int
     }
     class Zustand {
         +max_ki_versuche: int
         +max_sendeversuche: int
+        +max_fehlversuche: int
         +ki_versuche: Counter
         +sendeversuche: Counter
+        +fehlversuche: Counter
         +aufgegeben: set~str~
     }
     class Sperre {
         +pfad: Path
+        +windows: bool
         +__enter__()
         +__exit__()
     }
@@ -38,8 +44,11 @@ classDiagram
         +cfg: Config
         +speicher: UidSpeicher
         +ordner: str
+        +spam: str
+        +spam_filter: Callable
+        +ordner_liste: list~str~
         +neue() list~MailMessage~
-        +erledigt(msg)
+        +erledigt(msg, beantwortet)
         +warte(timeout)
     }
     class UidSpeicher {
@@ -66,9 +75,24 @@ classDiagram
         <<module>>
         +verarbeite(msg, dienste, cfg, letzter_versuch) Antwort
         +pruefe(msg, dienste, cfg) Lauf
-        +finde_plan_anhang(msg)
+        +anhaenge(msg) list~Anhang~
+        +sieht_wie_auftrag(msg) bool
+        +finde_plan_anhang(msg) Anhang
         +lade_und_pruefe_plan(anhang, planjahr) Planindex
         +antwort_huelle(msg) dict
+    }
+    class Anhang {
+        +filename: str
+        +payload: bytes
+    }
+    class Fehlerklassen {
+        <<exceptions>>
+        AuftragsFehler
+        VoruebergehenderFehler
+        KonfigurationsFehler
+        BerechnungsFehler
+        LLMFehler
+        PlanFehler
     }
     class Dienste {
         <<Protocol>>
@@ -79,9 +103,7 @@ classDiagram
     class ClaudeDienste {
         +cfg: Config
         +nur_cache: bool
-        +extrahiere(pdf, datei) Vertrag
-        +ordne_zu(vertrag, plan, datei) Zuordnung
-        +fasse_zusammen(ergebnisse, fakten) str
+        +client: Anthropic, timeout 300 s, 2 Retries
     }
     class OfflineDienste {
         +basis: Path
@@ -111,6 +133,7 @@ classDiagram
     class covenants {
         <<module>>
         +berechne_vertrag(datei, vertrag, zuordnung, plan, stichtag) VertragsErgebnis
+        +berechne_spielraum(ergebnis) Spielraum
         +runde(x, stellen) Decimal
     }
     class summary {
@@ -125,12 +148,21 @@ classDiagram
         +render(ergebnisse, zusammenfassung, ...) tuple
         +render_fehler(grund, details) tuple
     }
+    class format {
+        <<module>>
+        +formel(ergebnis) str
+        +formeln_zwischengroessen(ergebnis) list~str~
+        +spielraum(sr) str
+        +kennzahl / grenzwert / headroom(...) str
+    }
     class Config {
         +vertraege_dir: Path
         +cache_dir: Path
         +stichtag: date
         +modell: str
         +imap_host, smtp_host, mail_user ...
+        +poll_timeout: int
+        +spam_lesen: bool
         +planjahr: int
     }
 
@@ -139,15 +171,19 @@ classDiagram
     main --> pipeline : verarbeite()
     main *-- Zustand
     main ..> Sperre
+    main ..> pipeline : sieht_wie_auftrag als spam_filter
     Postfach --> UidSpeicher
     outbox ..> Antwort
     pipeline --> Dienste
+    pipeline ..> Anhang : entpackt winmail.dat
     pipeline --> Planindex : lade_plan()
     pipeline --> verify
     pipeline --> covenants
     pipeline --> summary
     pipeline --> render
     pipeline ..> Antwort : erzeugt
+    pipeline ..> Fehlerklassen
+    render --> format
     Dienste <|.. ClaudeDienste
     Dienste <|.. OfflineDienste
     ClaudeDienste --> llm : Extraktion
@@ -242,6 +278,7 @@ classDiagram
             +warnungen: list~str~
             +fehler: str?
             +name: str
+            +fehlgeschlagen(datei, vertrag, grund)$
         }
         class CovenantErgebnis {
             +kennzahl: str
@@ -253,6 +290,10 @@ classDiagram
             +zaehler: Decimal
             +nenner: Decimal
             +marge: Decimal?
+        }
+        class Spielraum {
+            +treiber: str
+            +aenderung: Decimal
         }
         class Groesse {
             +name: str
@@ -294,16 +335,20 @@ classDiagram
     Quelle ..> Planindex : Blatt/Zeile/Spalte
     Planindex "1" *-- "*" Zelle
 
-    VertragsErgebnis --> Vertrag
+    VertragsErgebnis --> Vertrag : 0..1 (fehlt, wenn Extraktion scheitert)
     VertragsErgebnis "1" *-- "*" CovenantErgebnis
     VertragsErgebnis "1" *-- "*" Groesse
     CovenantErgebnis --> Covenant
+    CovenantErgebnis "1" *-- "0..1" Spielraum
     CovenantErgebnis "1" *-- "*" Posten : zaehler_posten / nenner_posten
     Groesse "1" *-- "*" Posten
     Posten "1" *-- "*" Posten : unterposten
     Posten "1" *-- "*" Quellwert
     Quellwert ..> Zelle : Blatt!Zelle
 ```
+
+`Spielraum.aenderung` löst (Z + a·d) / (N + b·d) = Grenzwert nach d auf; a und b sind das Gewicht
+des Treibers (EBITDA, sonst erster Zählerposten) in Zähler und Nenner.
 
 ## 3. Ablauf einer Auftrags-Mail (Sequenzdiagramm)
 
@@ -322,11 +367,11 @@ sequenceDiagram
     participant SMTP as SMTP (Gmail)
 
     A->>IMAP: Auftrags-Mail mit Wirtschaftsplan_2027.xlsx
-    M->>IMAP: fetch(UNSEEN, mark_seen=False)
-    IMAP-->>M: neue Mails
-    M->>M: eigene/automatische Mail? dann überspringen
-    M->>P: verarbeite(msg)
-    P->>P: Anhang prüfen, Plan indexieren (openpyxl)
+    M->>IMAP: fetch UNSEEN in INBOX und Spam-Ordner (mark_seen=False)
+    IMAP-->>M: neue Mails (aus Spam nur mit Tabellen-Anhang)
+    M->>M: eigene/automatische Mail? dann ohne Antwort erledigt
+    M->>P: verarbeite(msg, letzter_versuch)
+    P->>P: Anhänge lesen, winmail.dat entpacken, Plan indexieren (openpyxl + defusedxml)
 
     loop je Vertrags-PDF
         P->>D: extrahiere(pdf)
@@ -344,7 +389,10 @@ sequenceDiagram
         C-->>D: Zuordnung (Code validiert)
         D-->>P: Zuordnung
         P->>R: berechne_vertrag(...)
-        R-->>P: VertragsErgebnis (Werte, Headroom, eingehalten)
+        R-->>P: VertragsErgebnis (Wert, Headroom, eingehalten, Spielraum)
+        opt Fehler nur in diesem Vertrag
+            P->>P: Zeile "Prüfung nicht möglich", übrige Verträge weiter
+        end
     end
 
     P->>D: fasse_zusammen(fakten)
@@ -352,15 +400,55 @@ sequenceDiagram
     C-->>D: 2–3 Sätze
     D-->>P: Text
     P->>S: pruefe_zahlen(text)
-    alt unbelegte Zahl im Text
+    alt unbelegte Zahl im Text oder KI-Fehler
         S-->>P: Standardtext (fallback)
     end
-    P->>P: render (Jinja2: HTML + Text)
+    P->>P: render (Jinja2: HTML + Text, Formel und Spielraum je Covenant)
     P-->>M: Antwort
 
     M->>SMTP: sende (In-Reply-To / References)
     SMTP-->>A: Antwort im selben Thread
     M->>M: UID merken (processed_uids.json)
-    M->>IMAP: als gelesen markieren
-    M->>IMAP: idle.wait(60 s)
+    M->>IMAP: als gelesen markieren (aus Spam: in den Posteingang verschieben)
+    M->>IMAP: idle.wait(60 s) auf dem Posteingang
 ```
+
+## 4. Lebenslauf einer Mail (Zustandsdiagramm)
+
+```mermaid
+stateDiagram-v2
+    direction TB
+    [*] --> Ungelesen : Mail kommt an
+
+    state "Ungelesen (INBOX)" as Ungelesen
+    state "Ungelesen im Spam" as Spam
+    state "Echter Spam (unangetastet)" as Ignoriert
+    state "In Bearbeitung" as Bearbeitung
+    state "Wartet auf KI-Dienst" as WartetKI
+    state "Wartet auf Versand" as WartetSMTP
+    state "Erledigt ohne Antwort" as OhneAntwort
+    state "Beantwortet" as Beantwortet
+    state "Aufgegeben bis Neustart" as Aufgegeben
+
+    [*] --> Spam : Gmail stuft als Spam ein
+    Spam --> Ignoriert : kein Tabellen-Anhang
+    Spam --> Bearbeitung : Tabellen-Anhang (auch in winmail.dat)
+    Ungelesen --> Bearbeitung : neue() im nächsten Durchlauf
+    Ungelesen --> OhneAntwort : eigene oder automatische Mail
+
+    Bearbeitung --> WartetKI : KI vorübergehend nicht erreichbar
+    WartetKI --> Bearbeitung : nächster Durchlauf (max. 3 Versuche)
+    Bearbeitung --> WartetSMTP : Versand fehlgeschlagen
+    WartetSMTP --> Bearbeitung : nächster Durchlauf
+    WartetSMTP --> Aufgegeben : 3 Versandversuche
+    Bearbeitung --> Aufgegeben : 3 unerwartete Fehler
+    Bearbeitung --> Beantwortet : Ergebnis- oder Fehler-Antwort gesendet
+
+    Beantwortet --> [*] : UID gemerkt, gelesen, aus Spam in INBOX verschoben
+    OhneAntwort --> [*] : UID gemerkt, gelesen
+    Aufgegeben --> Ungelesen : Neustart von Finn
+```
+
+Nach dem dritten KI-Versuch geht eine Fehler-Antwort („KI-Dienst derzeit nicht erreichbar“)
+raus – die Mail endet dann ebenfalls als *Beantwortet*. Reine Netzfehler zählen nicht als
+Fehler der Mail, sondern lösen eine Neuverbindung aus.
