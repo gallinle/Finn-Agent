@@ -18,6 +18,7 @@ from pathlib import Path
 import anthropic
 from imap_tools import MailMessage
 from pydantic import ValidationError
+from tnefparse import TNEF
 
 from finn.calc.covenants import BerechnungsFehler, VertragsErgebnis, berechne_vertrag
 from finn.config import PROJEKT_ROOT, Config, lade_config
@@ -91,12 +92,44 @@ def antwort_huelle(msg: MailMessage) -> dict:
 _ANDERE_FORMATE = (".xls", ".xlsm", ".xlsb", ".ods", ".csv", ".numbers")
 
 
-def finde_plan_anhang(msg: MailMessage):
-    xlsx = [a for a in msg.attachments if (a.filename or "").lower().endswith(".xlsx")]
+@dataclass(frozen=True)
+class Anhang:
+    filename: str
+    payload: bytes
+
+
+def _ist_tnef(a) -> bool:
+    return (a.filename or "").lower() == "winmail.dat" or a.content_type.lower() == "application/ms-tnef"
+
+
+def anhaenge(msg: MailMessage) -> list[Anhang]:
+    """Alle Anhänge; Outlook-'winmail.dat' (TNEF) wird in die enthaltenen Dateien entpackt."""
+    out = []
+    for a in msg.attachments:
+        if _ist_tnef(a):
+            try:
+                tnef = TNEF(a.payload)
+                inhalt = [Anhang(t.long_filename() or t.name or "", t.data or b"") for t in tnef.attachments]
+                log.info("winmail.dat entpackt: %s", [x.filename for x in inhalt])
+                out += inhalt
+                continue
+            except Exception as e:  # beschädigt → als normale Datei melden
+                log.warning("winmail.dat nicht lesbar: %s", e)
+        out.append(Anhang(a.filename or "", a.payload))
+    return out
+
+
+def sieht_wie_auftrag(msg: MailMessage) -> bool:
+    """Für den Spam-Ordner: nur Mails mit Tabellen-Anhang gelten als möglicher Auftrag."""
+    return any(a.filename.lower().endswith((".xlsx",) + _ANDERE_FORMATE) for a in anhaenge(msg))
+
+
+def finde_plan_anhang(msg: MailMessage) -> Anhang:
+    alle = anhaenge(msg)
+    xlsx = [a for a in alle if a.filename.lower().endswith(".xlsx")]
     if not xlsx:
-        namen = ", ".join(a.filename or "(ohne Namen)" for a in msg.attachments) or "keine"
-        andere = [a.filename for a in msg.attachments
-                  if (a.filename or "").lower().endswith(_ANDERE_FORMATE)]
+        namen = ", ".join(a.filename or "(ohne Namen)" for a in alle) or "keine"
+        andere = [a.filename for a in alle if a.filename.lower().endswith(_ANDERE_FORMATE)]
         if andere:
             raise AuftragsFehler(
                 "Der Wirtschaftsplan liegt nicht im Format .xlsx vor.",

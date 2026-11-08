@@ -4,7 +4,7 @@ Finn überwacht ein Postfach. Kommt eine Auftrags-Mail mit dem Wirtschaftsplan (
 liest Finn die Financial Covenants der Kreditverträge in `data/vertraege/`, ordnet die
 Planwerte zu, rechnet jede Kennzahl für den Stichtag 31.12.2027 und antwortet **im selben
 Mail-Thread** mit Zusammenfassung, Tabelle je Vertrag/Covenant (Wert, Grenzwert, Headroom,
-eingehalten) und den Fundstellen jeder Zahl – im Vertrag (Seite, §/Anlage) und im Plan
+eingehalten, Spielraum bis zum Grenzwert, Formel) und den Fundstellen jeder Zahl – im Vertrag (Seite, §/Anlage) und im Plan
 (`Blatt!Zelle`).
 
 ## Start
@@ -44,7 +44,9 @@ Gmail: `imap.gmail.com:993`, `smtp.gmail.com:465`, Passwort = App-Passwort (2FA 
    `In-Reply-To`/`References` an Reply-To bzw. From — `mail/outbox.py`
 
 Postfach: `mail/inbox.py` (imap-tools, ungelesene Mails + IDLE, verarbeitete UIDs in
-`cache/processed_uids.json`), Schleife und Fehlerbehandlung: `main.py`.
+`cache/processed_uids.json`; Spam-Ordner wird nach Aufträgen mit Excel-Anhang durchsucht,
+abschaltbar per `SPAM_LESEN=0`), Schleife und Fehlerbehandlung: `main.py`. Outlook-Anhänge in
+`winmail.dat` werden entpackt.
 
 Diagramme zu Komponenten, Datenmodell und Ablauf: [docs/UML.md](docs/UML.md).
 

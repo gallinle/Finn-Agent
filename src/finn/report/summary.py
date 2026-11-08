@@ -31,6 +31,9 @@ def fakten(ergebnisse: list[VertragsErgebnis]) -> list[dict]:
                 "grenzwert": fmt.grenzwert(e.grenzwert, e.einheit, e.richtung, e.rundung),
                 "headroom": fmt.headroom(e.headroom, e.einheit, e.rundung),
                 "eingehalten": "ja" if e.eingehalten else "nein",
+                "spielraum_bis_grenzwert": (
+                    f"Grenzwert wäre erreicht {fmt.spielraum_satz(e.spielraum)}, übrige Planwerte unverändert"
+                    if e.spielraum else "nicht ermittelbar"),
             })
     return out
 
@@ -72,6 +75,9 @@ def erlaubte_zahlen(ergebnisse: list[VertragsErgebnis], stichtag: date) -> set[D
                 add(x, st)
             for x in (e.zaehler, e.nenner):
                 add(x, 0)
+            if e.spielraum:
+                add(e.spielraum.aenderung, 0)
+                add(e.spielraum.aenderung / 1000, 1)
             for p in _alle_posten(e.zaehler_posten + e.nenner_posten):
                 add(p.wert, 0)
                 add(abs(p.basis), 0)
@@ -114,8 +120,19 @@ def fallback(ergebnisse: list[VertragsErgebnis], stichtag: date) -> str:
             f"Am knappsten ist {knapp.kennzahl} ({knapp.vertrag}) mit "
             f"{fmt.kennzahl(knapp.wert, knapp.einheit, knapp.rundung)} bei einem Grenzwert von "
             f"{fmt.grenzwert(knapp.grenzwert, knapp.einheit, knapp.richtung, knapp.rundung)} "
-            f"(Headroom {fmt.headroom(knapp.headroom, knapp.einheit, knapp.rundung)})."
+            f"(Headroom {fmt.headroom(knapp.headroom, knapp.einheit, knapp.rundung)})"
+            + (f"; der Grenzwert wäre {fmt.spielraum_satz(knapp.spielraum)} erreicht "
+               "(übrige Planwerte unverändert)" if knapp.spielraum else "")
+            + "."
         )
+        ebitda = [e for e in alle if e.spielraum and e.spielraum.treiber == "EBITDA"]
+        if ebitda and knapp not in ebitda:
+            eb = min(ebitda, key=lambda e: abs(e.spielraum.aenderung))
+            s.append(
+                f"Beim EBITDA ist der Spielraum für {eb.kennzahl} ({eb.vertrag}) am kleinsten: "
+                f"Ein Rückgang um rd. {fmt.zahl(abs(eb.spielraum.aenderung) / 1000, 1)} Mio. € "
+                f"würde den Grenzwert erreichen."
+            )
     if ohne:
         s.append(
             "Ohne Financial Covenants: " + ", ".join(v.name for v in ohne) + "."
@@ -136,7 +153,9 @@ Die Ergebnisse sind fertig berechnet. Du rechnest nicht und nennst ausschließli
 wörtlich in den Fakten stehen (gleiche Schreibweise). Keine Paragraphen, keine Vertragsnummern,
 keine Daten außer dem Stichtag.
 Schreibe 2–3 sachliche Sätze auf Deutsch: Gesamtergebnis, knappste(r) Covenant(s) mit Wert,
-Grenzwert und Headroom, ggf. Verträge ohne Covenants. Planwerte dienen der Frühwarnung."""
+Grenzwert und Headroom, dazu der Spielraum bis zum Grenzwert (aus "spielraum_bis_grenzwert",
+z. B. "Ein EBITDA-Rückgang von rd. 1,5 Mio. € würde den Grenzwert erreichen"), ggf. Verträge
+ohne Covenants oder nicht prüfbare Verträge. Planwerte dienen der Frühwarnung."""
 
 
 class _Text(BaseModel):

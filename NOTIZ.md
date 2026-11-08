@@ -9,6 +9,9 @@
 - Planbasierte Werte sind laut allen Verträgen nur Frühwarnung → Hinweis in der Mail. Das Margenraster
   (Vertrag 4) steht als Info-Zeile darin, ist aber kein Covenant.
 - Die Vertrags-PDFs liegen fest in `data/vertraege/`; per Mail kommt nur der Wirtschaftsplan.
+- „Spielraum bis Grenzwert“ (zusätzlich, nach dem Zielbild der Demo): Änderung des EBITDA (sonst des ersten
+  Zählerpostens), bei der der Grenzwert genau erreicht wäre. Übrige Planwerte bleiben unverändert, ohne
+  Rundungseffekt; bei Eigenkapitalquoten bleibt die Bilanzsumme konstant.
 
 ## Abweichungen von der Vorgabe
 - **Excel-Index nach Spaltenkopf statt nach Jahr:** Der Darlehensspiegel hat nur 2027, seine Spalten sind
@@ -24,6 +27,8 @@
 - **Keine Antwort auf automatische Mails** (no-reply, Auto-Submitted, Precedence, Mailinglisten) und eigene Mails,
   obwohl laut Vorgabe auch fremde Absender eine Antwort bekommen. Sonst drohen Mail-Schleifen, im Test-Postfach
   lag z. B. schon eine Google-Sicherheitswarnung.
+- **Spam-Ordner wird mitgelesen**, aber nur Mails mit Tabellen-Anhang. Ein beantworteter Auftrag wird in den
+  Posteingang verschoben. Outlook-`winmail.dat` (TNEF) wird entpackt.
 - **Als gelesen markiert wird erst nach erfolgreichem Versand** (`mark_seen=False`). Maßgeblich ist der lokale
   UID-Speicher.
 - **Zuordnung mit einem festen zweiten Versuch,** falls die Code-Prüfung scheitert. Das ist keine Agent-Schleife.

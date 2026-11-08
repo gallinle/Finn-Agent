@@ -46,9 +46,10 @@ class FakePostfach:
         return [m for m in self.msgs if m.uid not in self.gelesen
                 and not self.speicher.enthaelt(self.key, m.uid)]
 
-    def erledigt(self, m):
+    def erledigt(self, m, beantwortet=True):
         self.speicher.merke(self.key, m.uid)
         self.gelesen.append(m.uid)
+        self.beantwortet = getattr(self, "beantwortet", []) + ([m.uid] if beantwortet else [])
 
 
 def test_auftrag_und_fehlerfall_werden_beantwortet(tmp_path, offline, cfg):

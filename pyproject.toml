@@ -12,6 +12,7 @@ dependencies = [
     "pydantic>=2.14.3",
     "pymupdf>=2.1",
     "python-dotenv>=1.2.4",
+    "tnefparse>=1.4.0",
 ]
 
 [project.scripts]

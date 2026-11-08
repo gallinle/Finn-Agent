@@ -82,6 +82,7 @@ dependencies = [
     { name = "pydantic" },
     { name = "pymupdf" },
     { name = "python-dotenv" },
+    { name = "tnefparse" },
 ]
 
 [package.dev-dependencies]
@@ -98,6 +99,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.14.3" },
     { name = "pymupdf", specifier = ">=2.1" },
     { name = "python-dotenv", specifier = ">=1.2.4" },
+    { name = "tnefparse", specifier = ">=1.4.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -706,6 +708,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/46/58/8c37dea7bbf769b20d58e7ace7e5edfe65b849442b00ffcdd56be88697c6/tabulate-0.10.0.tar.gz", hash = "sha256:e2cfde8f79420f6deeffdeda9aaec3b6bc5abce947655d17ac662b126e48a60d", size = 91754, upload-time = "2026-03-04T18:55:34.402Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/99/55/db07de81b5c630da5cbf5c7df646580ca26dfaefa593667fc6f2fe016d2e/tabulate-0.10.0-py3-none-any.whl", hash = "sha256:f0b0622e567335c8fabaaa659f1b33bcb6ddfe2e496071b743aa113f8774f2d3", size = 39814, upload-time = "2026-03-04T18:55:31.284Z" },
+]
+
+[[package]]
+name = "tnefparse"
+version = "1.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/40/aa/d1dee78d61c18abcec8de0343aca06e012e2007739c4868de8b254b6ab2f/tnefparse-1.4.0.tar.gz", hash = "sha256:bd871432b9afecb478fda2bbd4ab3673de00db4ba5dcc723bbb6c86a76420f95", size = 2612426, upload-time = "2021-01-24T21:43:46.305Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/64/f7/b92196c250d3e093e891677ccf31c469f41910acec80fc984b7460eb4e83/tnefparse-1.4.0-py3-none-any.whl", hash = "sha256:b0e9e9dced05f182dafe19167fd28ff2cce102da30a7ff1101dc387194d012ba", size = 30927, upload-time = "2021-01-24T21:43:35.674Z" },
 ]
 
 [[package]]

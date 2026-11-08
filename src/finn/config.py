@@ -25,6 +25,7 @@ class Config:
     mail_user: str = ""
     mail_password: str = field(default="", repr=False)
     poll_timeout: int = 60
+    spam_lesen: bool = True
 
     @property
     def planjahr(self) -> int:
@@ -49,5 +50,6 @@ def lade_config() -> Config:
         mail_user=env("MAIL_USER", ""),
         mail_password=env("MAIL_PASSWORD", ""),
         poll_timeout=int(env("POLL_TIMEOUT", "60")),
+        spam_lesen=env("SPAM_LESEN", "1").strip().lower() not in {"0", "false", "nein", "no"},
         **kw,
     )

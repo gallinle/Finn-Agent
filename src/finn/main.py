@@ -31,7 +31,7 @@ from finn.dienste import Dienste
 from finn.mail import outbox
 from finn.mail.inbox import Postfach, UidSpeicher
 from finn.mail.outbox import Antwort
-from finn.pipeline import VoruebergehenderFehler, verarbeite
+from finn.pipeline import VoruebergehenderFehler, sieht_wie_auftrag, verarbeite
 
 log = logging.getLogger("finn.main")
 
@@ -77,11 +77,11 @@ def bearbeite_neue(postfach, dienste: Dienste, cfg: Config, sende: Sender,
         log.info("Mail uid=%s von %s: %r", msg.uid, msg.from_, msg.subject)
         if absender == cfg.mail_user.lower():
             log.info("uid=%s stammt vom eigenen Konto – keine Antwort", msg.uid)
-            postfach.erledigt(msg)
+            postfach.erledigt(msg, beantwortet=False)
             continue
         if grund := ist_automatisch(msg):
             log.info("uid=%s ist automatisch erzeugt (%s) – keine Antwort", msg.uid, grund)
-            postfach.erledigt(msg)
+            postfach.erledigt(msg, beantwortet=False)
             continue
         zustand.ki_versuche[msg.uid] += 1
         letzter = zustand.ki_versuche[msg.uid] >= zustand.max_ki_versuche
@@ -130,8 +130,9 @@ class _NurLesen:
     def neue(self) -> list[MailMessage]:
         return self.p.neue()
 
-    def erledigt(self, msg: MailMessage) -> None:
-        log.info("[trocken] uid=%s würde als erledigt markiert", msg.uid)
+    def erledigt(self, msg: MailMessage, beantwortet: bool = True) -> None:
+        log.info("[trocken] uid=%s (%s) würde als erledigt markiert", msg.uid,
+                 getattr(msg, "finn_ordner", "INBOX"))
 
 
 def pruefe_config(cfg: Config) -> list[str]:
@@ -224,7 +225,7 @@ def _schleife(cfg, dienste, speicher, sende, zustand, einmal: bool, trocken: boo
     pause = 5
     while True:
         try:
-            with Postfach(cfg, speicher) as postfach:
+            with Postfach(cfg, speicher, spam_filter=sieht_wie_auftrag if cfg.spam_lesen else None) as postfach:
                 pause = 5  # Verbindung steht → Backoff zurücksetzen
                 p = _NurLesen(postfach) if trocken else postfach
                 while True:

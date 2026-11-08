@@ -9,3 +9,6 @@ out/
 cache/processed_uids.json
 logs/
 cache/finn.lock
+
+# Aufgabenblatt (nicht Teil des Repos)
+Aufgabenblatt_Case_Study_Finn*.pdf

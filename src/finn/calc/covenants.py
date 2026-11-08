@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
@@ -47,6 +48,17 @@ class Groesse:
 
 
 @dataclass
+class Spielraum:
+    """Änderung des Treibers (T€), bei der der Grenzwert genau erreicht wäre.
+
+    Negativ = Rückgang bis zum Grenzwert; übrige Planwerte unverändert, ohne Rundungseffekt.
+    """
+
+    treiber: str
+    aenderung: Decimal
+
+
+@dataclass
 class CovenantErgebnis:
     vertrag: str
     kennzahl: str
@@ -65,6 +77,7 @@ class CovenantErgebnis:
     grenzwert_fundstelle: Fundstelle
     rundung: int | None
     marge: tuple[Decimal, Fundstelle] | None = None
+    spielraum: Spielraum | None = None
 
 
 @dataclass
@@ -193,6 +206,47 @@ def berechne_covenant(
     )
 
 
+def _koeffizient(posten: list[Posten], ist_treiber) -> Decimal:
+    """Wie stark geht der Treiber (rekursiv über Zwischengrößen) in die Summe ein?"""
+    k = Decimal(0)
+    for p in posten:
+        if ist_treiber(p):
+            k += p.vorzeichen * p.faktor
+        elif p.unterposten:
+            k += p.vorzeichen * p.faktor * _koeffizient(p.unterposten, ist_treiber)
+    return k
+
+
+def _kurzname(name: str) -> str:
+    while True:
+        neu = re.sub(r"\s*\([^()]*\)\s*$", "", name).strip()
+        if neu == name or not neu:
+            return name
+        name = neu
+
+
+def berechne_spielraum(e: CovenantErgebnis) -> Spielraum | None:
+    """Löst (Z + a·d) / (N + b·d) · k = Grenzwert nach d auf (a, b = Gewicht des Treibers)."""
+    def ist_ebitda(p: Posten) -> bool:
+        return (p.zwischengroesse or "").strip().casefold() == "ebitda"
+
+    alle = e.zaehler_posten + e.nenner_posten
+    if _koeffizient(alle, ist_ebitda) != 0:
+        ist_treiber, name = ist_ebitda, "EBITDA"
+    elif e.zaehler_posten:
+        erster = e.zaehler_posten[0]
+        ist_treiber, name = (lambda p: p is erster), _kurzname(erster.bezeichnung)
+    else:
+        return None
+    a = _koeffizient(e.zaehler_posten, ist_treiber)
+    b = _koeffizient(e.nenner_posten, ist_treiber)
+    grenze = e.grenzwert / (100 if e.einheit == "prozent" else 1)
+    nenner = a - grenze * b
+    if nenner == 0:
+        return None
+    return Spielraum(name, (grenze * e.nenner - e.zaehler) / nenner)
+
+
 def _marge(v: Vertrag, e: CovenantErgebnis):
     for m in v.margenraster:
         if m.kennzahl.strip().casefold() != e.kennzahl.strip().casefold():
@@ -213,5 +267,6 @@ def berechne_vertrag(
         for c in v.covenants:
             e = berechne_covenant(c, r, stichtag, v.vertragsname)
             e.marge = _marge(v, e)
+            e.spielraum = berechne_spielraum(e)
             ergebnisse.append(e)
     return VertragsErgebnis(datei, v, ergebnisse, r.groessen, r.warnungen)

@@ -19,7 +19,7 @@ anbei die Covenant-Prüfung auf Basis {{ plan_datei }} (Plan {{ stichtag.year }}
 - {{ ve.name }}: PRÜFUNG NICHT MÖGLICH – {{ ve.fehler }}
 {% endif %}
 {% for e in ve.covenants %}
-- {{ ve.name }} | {{ e.kennzahl }}: {{ fmt.kennzahl(e.wert, e.einheit, e.rundung) }} (Grenzwert {{ fmt.grenzwert(e.grenzwert, e.einheit, e.richtung, e.rundung) }}, Headroom {{ fmt.headroom(e.headroom, e.einheit, e.rundung) }}) -> eingehalten: {{ "ja" if e.eingehalten else "NEIN" }}  [Grenzwert {{ fs(e.grenzwert_fundstelle) }}]
+- {{ ve.name }} | {{ e.kennzahl }}: {{ fmt.kennzahl(e.wert, e.einheit, e.rundung) }} (Grenzwert {{ fmt.grenzwert(e.grenzwert, e.einheit, e.richtung, e.rundung) }}, Headroom {{ fmt.headroom(e.headroom, e.einheit, e.rundung) }}) -> eingehalten: {{ "ja" if e.eingehalten else "NEIN" }}, Spielraum bis Grenzwert: {{ fmt.spielraum(e.spielraum) }}  [Grenzwert {{ fs(e.grenzwert_fundstelle) }}]
 {% else %}
 {% if not ve.fehler %}
 - {{ ve.name }}: keine Financial Covenants{% if ve.vertrag.begruendung_fundstelle %} [{{ fs(ve.vertrag.begruendung_fundstelle) }}]{% endif %}
@@ -33,11 +33,16 @@ HERLEITUNG (T€)
 {% for e in ve.covenants %}
 
 {{ ve.name }} – {{ e.kennzahl }}
+ Formel: {{ fmt.formel(e) }}
+{% for f in fmt.formeln_zwischengroessen(e) %}   mit {{ f }}
+{% endfor %}
  Zähler:
 {{ zeilen(e.zaehler_posten) }}  = {{ fmt.betrag(e.zaehler) }}
  Nenner:
 {{ zeilen(e.nenner_posten) }}  = {{ fmt.betrag(e.nenner) }}
  Ergebnis: {{ fmt.kennzahl(e.wert, e.einheit, e.rundung) }}{% if e.rundung is not none %} (ungerundet {{ fmt.zahl(e.wert_roh, 4) }}){% endif %}  [Definition {{ fs(e.covenant.fundstelle_definition) }}]
+{% if e.spielraum %} Spielraum: Grenzwert wäre erreicht {{ fmt.spielraum_satz(e.spielraum) }} (übrige Planwerte unverändert, ohne Rundungseffekt)
+{% endif %}
 {% if e.marge %} Info Margenstufe (kein Covenant): {{ fmt.zahl(e.marge[0], 2) }} % p. a. [{{ fs(e.marge[1]) }}]
 {% endif %}
 {% for h in e.covenant.hinweise %} Hinweis: {{ h.text }} [{{ fs(h.fundstelle) }}]

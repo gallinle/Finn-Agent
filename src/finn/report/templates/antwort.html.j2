@@ -28,31 +28,32 @@ S.&nbsp;{{ f.seite }}, {{ f.paragraph }}
 <thead style="background:#1f5f99;color:#fff"><tr>
   <th style="padding:4px 8px;text-align:left">Vertrag</th><th style="padding:4px 8px;text-align:left">Covenant</th>
   <th style="padding:4px 8px">Wert</th><th style="padding:4px 8px">Grenzwert</th><th style="padding:4px 8px">Headroom</th>
-  <th style="padding:4px 8px">Eingehalten</th><th style="padding:4px 8px;text-align:left">Fundstelle Vertrag</th>
+  <th style="padding:4px 8px">Eingehalten</th><th style="padding:4px 8px" title="Änderung, bei der der Grenzwert genau erreicht wäre (übrige Planwerte unverändert)">Spielraum bis Grenzwert</th><th style="padding:4px 8px;text-align:left">Fundstelle Vertrag</th>
 </tr></thead>
 <tbody>
 {% for ve in ergebnisse %}
 {% if ve.fehler %}
 <tr>
   <td style="padding:4px 8px">{{ ve.name }}</td>
-  <td style="padding:4px 8px;color:#b00020;font-weight:bold" colspan="6">Prüfung nicht möglich: {{ ve.fehler }}</td>
+  <td style="padding:4px 8px;color:#b00020;font-weight:bold" colspan="7">Prüfung nicht möglich: {{ ve.fehler }}</td>
 </tr>
 {% elif ve.covenants %}
 {% for e in ve.covenants %}
 <tr>
   <td style="padding:4px 8px">{{ ve.name }}</td>
-  <td style="padding:4px 8px">{{ e.kennzahl }}</td>
+  <td style="padding:4px 8px">{{ e.kennzahl }}<br><small style="color:#555">{{ fmt.formel(e) }}</small></td>
   <td style="padding:4px 8px;text-align:right;white-space:nowrap"><b>{{ fmt.kennzahl(e.wert, e.einheit, e.rundung) }}</b></td>
   <td style="padding:4px 8px;text-align:right;white-space:nowrap">{{ fmt.grenzwert(e.grenzwert, e.einheit, e.richtung, e.rundung) }}</td>
   <td style="padding:4px 8px;text-align:right;white-space:nowrap">{{ fmt.headroom(e.headroom, e.einheit, e.rundung) }}</td>
   <td style="padding:4px 8px;text-align:center;font-weight:bold;color:{{ '#1b7f3b' if e.eingehalten else '#b00020' }}">{{ "ja" if e.eingehalten else "NEIN" }}</td>
+  <td style="padding:4px 8px;text-align:right;white-space:nowrap">{{ fmt.spielraum(e.spielraum) }}</td>
   <td style="padding:4px 8px">Grenzwert: {{ fs(e.grenzwert_fundstelle) }}<br>Definition: {{ fs(e.covenant.fundstelle_definition) }}</td>
 </tr>
 {% endfor %}
 {% else %}
 <tr>
   <td style="padding:4px 8px">{{ ve.name }}</td>
-  <td style="padding:4px 8px" colspan="5"><em>keine Financial Covenants</em></td>
+  <td style="padding:4px 8px" colspan="6"><em>keine Financial Covenants</em></td>
   <td style="padding:4px 8px">{% if ve.vertrag.begruendung_fundstelle %}{{ fs(ve.vertrag.begruendung_fundstelle) }}{% endif %}</td>
 </tr>
 {% endif %}
@@ -64,6 +65,7 @@ S.&nbsp;{{ f.seite }}, {{ f.paragraph }}
 {% for ve in ergebnisse %}
 {% for e in ve.covenants %}
 <h4 style="margin:14px 0 4px">{{ ve.name }} – {{ e.kennzahl }}</h4>
+<p style="margin:0 0 2px;font-family:monospace">{{ fmt.formel(e) }}{% for f in fmt.formeln_zwischengroessen(e) %}<br>mit {{ f }}{% endfor %}</p>
 <p style="margin:0 0 4px;color:#333"><i>{{ e.covenant.definition_wortlaut }}</i></p>
 <table style="border-collapse:collapse;width:100%" border="1" cellspacing="0">
 <thead style="background:#e8edf2"><tr><th style="padding:3px 8px;text-align:left">Position</th><th style="padding:3px 8px">T€</th><th style="padding:3px 8px;text-align:left">Fundstelle Vertrag</th><th style="padding:3px 8px;text-align:left">Fundstelle Plan</th></tr></thead>
@@ -78,6 +80,7 @@ S.&nbsp;{{ f.seite }}, {{ f.paragraph }}
     <td style="padding:3px 8px;text-align:right;white-space:nowrap"><b>{{ fmt.kennzahl(e.wert, e.einheit, e.rundung) }}</b></td>
     <td style="padding:3px 8px">{{ fs(e.covenant.fundstelle_definition) }}</td><td></td></tr>
 <tr><td style="padding:3px 8px">Grenzwert</td><td style="padding:3px 8px;text-align:right;white-space:nowrap">{{ fmt.grenzwert(e.grenzwert, e.einheit, e.richtung, e.rundung) }}</td><td style="padding:3px 8px">{{ fs(e.grenzwert_fundstelle) }}</td><td></td></tr>
+{% if e.spielraum %}<tr><td style="padding:3px 8px">Spielraum: Grenzwert wäre erreicht {{ fmt.spielraum_satz(e.spielraum) }} (übrige Planwerte unverändert, ohne Rundungseffekt)</td><td style="padding:3px 8px;text-align:right;white-space:nowrap">{{ fmt.betrag(e.spielraum.aenderung.quantize(1)) }}</td><td></td><td></td></tr>{% endif %}
 {% if e.marge %}<tr><td style="padding:3px 8px">Info: Margenstufe (kein Covenant)</td><td style="padding:3px 8px;text-align:right">{{ fmt.zahl(e.marge[0], 2) }}&nbsp;% p.&nbsp;a.</td><td style="padding:3px 8px">{{ fs(e.marge[1]) }}</td><td></td></tr>{% endif %}
 </tbody></table>
 {% if e.covenant.hinweise %}
