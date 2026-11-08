@@ -32,8 +32,8 @@ def plan():
 
 
 def _rechne(plan, stem, mutiere=None):
-    v = Vertrag.model_validate_json((REF / "extraktion" / f"{stem}.json").read_text())
-    z = Zuordnung.model_validate_json((REF / "zuordnung" / f"{stem}.json").read_text())
+    v = Vertrag.model_validate_json((REF / "extraktion" / f"{stem}.json").read_text(encoding="utf-8"))
+    z = Zuordnung.model_validate_json((REF / "zuordnung" / f"{stem}.json").read_text(encoding="utf-8"))
     if mutiere:
         mutiere(v, z)
     return berechne_vertrag(f"{stem}.pdf", v, z, plan, STICHTAG)

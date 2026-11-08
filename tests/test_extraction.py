@@ -66,7 +66,7 @@ def test_alle_zitate_verifiziert(quelle):
 
 
 def test_grenzwert_nicht_im_zitat():
-    v = Vertrag.model_validate_json((REFERENZ / "Vertrag_3_Landesbank_Investitionsdarlehen.json").read_text())
+    v = Vertrag.model_validate_json((REFERENZ / "Vertrag_3_Landesbank_Investitionsdarlehen.json").read_text(encoding="utf-8"))
     v.covenants[0].grenzwerte[0].wert = 1.5
     assert len(verify.pruefe_grenzwerte(v)) == 1
 
@@ -151,7 +151,7 @@ def test_cache_lauf_entspricht_phase1(auftrag, cache_dienste, cfg):
 def test_cache_extraktion_struktur_wie_referenz(cache_dienste):
     for pdf in sorted(VERTRAEGE.glob("*.pdf")):
         ist = cache_dienste.extrahiere(pdf.read_bytes(), pdf.name)
-        soll = Vertrag.model_validate_json((REFERENZ / f"{pdf.stem}.json").read_text())
+        soll = Vertrag.model_validate_json((REFERENZ / f"{pdf.stem}.json").read_text(encoding="utf-8"))
         assert ist.hat_financial_covenants == soll.hat_financial_covenants, pdf.name
         assert len(ist.covenants) == len(soll.covenants), pdf.name
         for i, s in zip(ist.covenants, soll.covenants):

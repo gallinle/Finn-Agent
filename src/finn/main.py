@@ -8,7 +8,6 @@
 from __future__ import annotations
 
 import argparse
-import fcntl
 import imaplib
 import logging
 import re
@@ -194,25 +193,60 @@ def richte_logging_ein(log_dir: Path) -> None:
 
 
 class Sperre:
-    """Verhindert zwei gleichzeitig laufende Instanzen (Doppelverarbeitung)."""
+    """Verhindert zwei gleichzeitig laufende Instanzen (Doppelverarbeitung).
 
-    def __init__(self, pfad: Path):
+    Plattformunabhängig: Unix/macOS über fcntl.flock, Windows über msvcrt.locking.
+    Die Sperre hängt am offenen Dateihandle und verfällt automatisch, wenn der Prozess endet.
+    """
+
+    def __init__(self, pfad: Path, plattform: str | None = None):
         self.pfad = pfad
+        self.windows = (plattform or sys.platform) == "win32"
         self.f = None
 
-    def __enter__(self):
-        self.pfad.parent.mkdir(parents=True, exist_ok=True)
-        self.f = open(self.pfad, "w")
+    def _sperren(self) -> bool:
+        if self.windows:
+            import msvcrt
+
+            self.f.seek(0)
+            try:
+                msvcrt.locking(self.f.fileno(), msvcrt.LK_NBLCK, 1)
+            except OSError:
+                return False
+            return True
+        import fcntl
+
         try:
             fcntl.flock(self.f, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
+            return False
+        return True
+
+    def _freigeben(self) -> None:
+        if self.windows:
+            import msvcrt
+
+            self.f.seek(0)
+            msvcrt.locking(self.f.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+
+            fcntl.flock(self.f, fcntl.LOCK_UN)
+
+    def __enter__(self):
+        self.pfad.parent.mkdir(parents=True, exist_ok=True)
+        # "a+" statt "w": eine laufende Instanz behält ihre Datei (Windows sperrt Byte-Bereiche)
+        self.f = open(self.pfad, "a+", encoding="utf-8")
+        if not self._sperren():
             self.f.close()
-            raise RuntimeError(f"Finn läuft bereits (Sperre {self.pfad})") from None
+            raise RuntimeError(f"Finn läuft bereits (Sperre {self.pfad})")
         return self
 
     def __exit__(self, *exc):
-        fcntl.flock(self.f, fcntl.LOCK_UN)
-        self.f.close()
+        try:
+            self._freigeben()
+        finally:
+            self.f.close()
 
 
 def _sigterm(*_):

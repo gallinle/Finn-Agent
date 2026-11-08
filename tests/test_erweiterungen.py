@@ -160,8 +160,8 @@ def ergebnisse():
     plan = lade_plan((PROJEKT_ROOT / "data" / "Wirtschaftsplan_2027.xlsx").read_bytes())
     out = {}
     for j in sorted((REF / "extraktion").glob("*.json")):
-        v = Vertrag.model_validate_json(j.read_text())
-        z = Zuordnung.model_validate_json((REF / "zuordnung" / j.name).read_text())
+        v = Vertrag.model_validate_json(j.read_text(encoding="utf-8"))
+        z = Zuordnung.model_validate_json((REF / "zuordnung" / j.name).read_text(encoding="utf-8"))
         for e in berechne_vertrag(j.name, v, z, plan, date(2027, 12, 31)).covenants:
             out[e.kennzahl] = e
     return out

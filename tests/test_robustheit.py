@@ -342,3 +342,76 @@ def test_xml_bombe_wird_abgewiesen(offline, cfg, plan_bytes):
     assert "xl/sharedStrings.xml" in zipfile.ZipFile(io.BytesIO(plan_bytes)).namelist()
     a = verarbeite(_auftrag([("Wirtschaftsplan_2027.xlsx", ziel.getvalue())]), offline, cfg)
     assert a.ist_fehler and "konnte nicht als Wirtschaftsplan gelesen werden" in a.text
+
+
+# --- Sperre plattformunabhängig ---------------------------------------------------
+
+
+class _FakeMsvcrt:
+    """Bildet msvcrt.locking nach: Byte-Sperre je Datei (Inode), nicht blockierend."""
+
+    LK_NBLCK, LK_UNLCK = 2, 0
+
+    def __init__(self):
+        self.gesperrt: dict[int, int] = {}   # inode → fd des Halters
+        self.aufrufe: list[tuple[int, int]] = []
+
+    def locking(self, fd, modus, n):
+        import os
+
+        assert n == 1
+        ino = os.fstat(fd).st_ino
+        self.aufrufe.append((modus, n))
+        if modus == self.LK_NBLCK:
+            if ino in self.gesperrt and self.gesperrt[ino] != fd:
+                raise OSError(36, "Resource deadlock avoided")   # wie unter Windows (EDEADLOCK)
+            self.gesperrt[ino] = fd
+        elif modus == self.LK_UNLCK:
+            self.gesperrt.pop(ino, None)
+
+
+def test_sperre_windows_zweig(tmp_path, monkeypatch):
+    import sys
+
+    fake = _FakeMsvcrt()
+    monkeypatch.setitem(sys.modules, "msvcrt", fake)
+    pfad = tmp_path / "finn.lock"
+    with Sperre(pfad, plattform="win32"):
+        with pytest.raises(RuntimeError, match="läuft bereits"):
+            with Sperre(pfad, plattform="win32"):
+                pass
+    assert fake.gesperrt == {}                                 # sauber freigegeben
+    with Sperre(pfad, plattform="win32"):                      # danach wieder möglich
+        pass
+    assert (fake.LK_NBLCK, 1) in fake.aufrufe and (fake.LK_UNLCK, 1) in fake.aufrufe
+
+
+def test_sperre_gilt_ueber_prozesse(tmp_path):
+    """Echter zweiter Prozess hält die Sperre → diese Instanz darf nicht starten."""
+    import subprocess
+    import sys
+    import time
+
+    pfad = tmp_path / "finn.lock"
+    code = ("import sys,time; from pathlib import Path; from finn.main import Sperre\n"
+            "with Sperre(Path(sys.argv[1])):\n    print('gesperrt', flush=True); time.sleep(30)\n")
+    p = subprocess.Popen([sys.executable, "-c", code, str(pfad)], stdout=subprocess.PIPE, text=True)
+    try:
+        assert p.stdout.readline().strip() == "gesperrt"
+        with pytest.raises(RuntimeError, match="läuft bereits"):
+            with Sperre(pfad):
+                pass
+    finally:
+        p.kill()
+        p.wait()
+    time.sleep(0.1)
+    with Sperre(pfad):                                         # nach Prozessende frei
+        pass
+
+
+def test_sperre_kuerzt_datei_nicht(tmp_path):
+    pfad = tmp_path / "finn.lock"
+    pfad.write_text("pid 123", encoding="utf-8")
+    with Sperre(pfad):
+        pass
+    assert pfad.read_text(encoding="utf-8") == "pid 123"      # "a+" statt "w"
