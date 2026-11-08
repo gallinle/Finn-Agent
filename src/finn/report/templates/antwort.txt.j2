@@ -1,0 +1,57 @@
+{% macro fs(f) -%}
+S. {{ f.seite }}, {{ f.paragraph }}{% if (f.seite, f.zitat) in nicht_gefunden %} [!] Zitat nicht verifiziert{% endif %}
+{%- endmacro %}
+{% macro zeilen(posten, tiefe=0) %}
+{% for p in posten %}
+{{ "  " * (tiefe + 1) }}{{ "-" if p.vorzeichen < 0 else "+" }} {% if p.faktor != 1 %}{{ fmt.zahl(p.faktor * 100, 0) }} % {% endif %}{{ p.bezeichnung }}: {{ fmt.betrag(p.wert * p.vorzeichen) }} T€  [Vertrag {{ fs(p.fundstelle) }}; Plan {% if p.zwischengroesse %}siehe {{ p.zwischengroesse }}{% elif p.nicht_im_plan %}nicht im Plan{% else %}{% for q in p.quellen %}{{ q.ref }}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}]
+{% if p.unterposten %}{{ zeilen(p.unterposten, tiefe + 1) }}{% endif %}
+{% endfor %}
+{% endmacro %}
+Guten Tag,
+
+anbei die Covenant-Prüfung auf Basis {{ plan_datei }} (Plan {{ stichtag.year }}, Stichtag {{ stichtag.strftime("%d.%m.%Y") }}).
+
+{{ zusammenfassung }}
+
+ÜBERSICHT
+{% for ve in ergebnisse %}
+{% for e in ve.covenants %}
+- {{ ve.vertrag.vertragsname }} | {{ e.kennzahl }}: {{ fmt.kennzahl(e.wert, e.einheit, e.rundung) }} (Grenzwert {{ fmt.grenzwert(e.grenzwert, e.einheit, e.richtung, e.rundung) }}, Headroom {{ fmt.headroom(e.headroom, e.einheit, e.rundung) }}) -> eingehalten: {{ "ja" if e.eingehalten else "NEIN" }}  [Grenzwert {{ fs(e.grenzwert_fundstelle) }}]
+{% else %}
+- {{ ve.vertrag.vertragsname }}: keine Financial Covenants{% if ve.vertrag.begruendung_fundstelle %} [{{ fs(ve.vertrag.begruendung_fundstelle) }}]{% endif %}
+
+{% endfor %}
+{% endfor %}
+
+HERLEITUNG (T€)
+{% for ve in ergebnisse %}
+{% for e in ve.covenants %}
+
+{{ ve.vertrag.vertragsname }} – {{ e.kennzahl }}
+ Zähler:
+{{ zeilen(e.zaehler_posten) }}  = {{ fmt.betrag(e.zaehler) }}
+ Nenner:
+{{ zeilen(e.nenner_posten) }}  = {{ fmt.betrag(e.nenner) }}
+ Ergebnis: {{ fmt.kennzahl(e.wert, e.einheit, e.rundung) }}{% if e.rundung is not none %} (ungerundet {{ fmt.zahl(e.wert_roh, 4) }}){% endif %}  [Definition {{ fs(e.covenant.fundstelle_definition) }}]
+{% if e.marge %} Info Margenstufe (kein Covenant): {{ fmt.zahl(e.marge[0], 2) }} % p. a. [{{ fs(e.marge[1]) }}]
+{% endif %}
+{% for h in e.covenant.hinweise %} Hinweis: {{ h.text }} [{{ fs(h.fundstelle) }}]
+{% endfor %}
+{% endfor %}
+{% for w in ve.warnungen %} Hinweis: {{ w }}
+{% endfor %}
+{% endfor %}
+{% if ungeprueft %}
+
+Hinweis: Die Vertragszitate wurden in diesem Lauf nicht gegen die PDFs geprüft.
+{% endif %}
+{% if nicht_gefunden %}
+
+ACHTUNG: {{ nicht_gefunden|length }} Zitat(e) wurden auf der angegebenen Vertragsseite nicht gefunden ([!] markiert).
+{% endif %}
+{% for h in hinweise %}
+Hinweis: {{ h }}
+{% endfor %}
+
+Die Kennzahlen wurden programmatisch aus den Planwerten berechnet; planbasierte Werte dienen der Frühwarnung.
+– Finn

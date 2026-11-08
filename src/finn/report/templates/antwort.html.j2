@@ -1,0 +1,100 @@
+{% macro fs(f) -%}
+S.&nbsp;{{ f.seite }}, {{ f.paragraph }}
+{%- if (f.seite, f.zitat) in nicht_gefunden %} <span style="color:#b00020;font-weight:bold" title="Zitat nicht auf der angegebenen Seite gefunden">⚠&nbsp;Zitat nicht verifiziert</span>{% endif %}
+{%- endmacro %}
+{% macro plan(p) -%}
+{% if p.zwischengroesse %}siehe {{ p.zwischengroesse }}{% elif p.nicht_im_plan %}<em>nicht im Plan</em>{% else %}{% for q in p.quellen %}{{ q.ref }}{% if q.beitrag != q.roh %} ({{ fmt.betrag(q.roh) }}){% endif %}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}
+{%- endmacro %}
+{% macro zeilen(posten, tiefe=0) %}
+{% for p in posten %}
+<tr>
+  <td style="padding:3px 8px;padding-left:{{ 8 + tiefe * 18 }}px">{{ "−" if p.vorzeichen < 0 else "+" }} {% if p.faktor != 1 %}{{ fmt.zahl(p.faktor * 100, 0) }}&nbsp;% {% endif %}{{ p.bezeichnung }}{% if p.hinweis %}<br><small style="color:#555">{{ p.hinweis }}</small>{% endif %}</td>
+  <td style="padding:3px 8px;text-align:right;white-space:nowrap">{{ fmt.betrag(p.wert * p.vorzeichen) }}</td>
+  <td style="padding:3px 8px">{{ fs(p.fundstelle) }}</td>
+  <td style="padding:3px 8px;font-family:monospace">{{ plan(p) }}</td>
+</tr>
+{% if p.unterposten %}{{ zeilen(p.unterposten, tiefe + 1) }}{% endif %}
+{% endfor %}
+{% endmacro %}
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><title>Covenant-Prüfung Plan {{ stichtag.year }}</title></head>
+<body style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#222;max-width:960px">
+<p>Guten Tag,</p>
+<p>anbei die Covenant-Prüfung auf Basis <b>{{ plan_datei }}</b> (Plan {{ stichtag.year }}, Stichtag {{ stichtag.strftime("%d.%m.%Y") }}).</p>
+<p style="background:#f4f6f8;padding:10px;border-left:4px solid #1f5f99">{{ zusammenfassung }}</p>
+
+<h3 style="margin-bottom:4px">Übersicht</h3>
+<table style="border-collapse:collapse;width:100%" border="1" cellspacing="0">
+<thead style="background:#1f5f99;color:#fff"><tr>
+  <th style="padding:4px 8px;text-align:left">Vertrag</th><th style="padding:4px 8px;text-align:left">Covenant</th>
+  <th style="padding:4px 8px">Wert</th><th style="padding:4px 8px">Grenzwert</th><th style="padding:4px 8px">Headroom</th>
+  <th style="padding:4px 8px">Eingehalten</th><th style="padding:4px 8px;text-align:left">Fundstelle Vertrag</th>
+</tr></thead>
+<tbody>
+{% for ve in ergebnisse %}
+{% if ve.covenants %}
+{% for e in ve.covenants %}
+<tr>
+  <td style="padding:4px 8px">{{ ve.vertrag.vertragsname }}</td>
+  <td style="padding:4px 8px">{{ e.kennzahl }}</td>
+  <td style="padding:4px 8px;text-align:right;white-space:nowrap"><b>{{ fmt.kennzahl(e.wert, e.einheit, e.rundung) }}</b></td>
+  <td style="padding:4px 8px;text-align:right;white-space:nowrap">{{ fmt.grenzwert(e.grenzwert, e.einheit, e.richtung, e.rundung) }}</td>
+  <td style="padding:4px 8px;text-align:right;white-space:nowrap">{{ fmt.headroom(e.headroom, e.einheit, e.rundung) }}</td>
+  <td style="padding:4px 8px;text-align:center;font-weight:bold;color:{{ '#1b7f3b' if e.eingehalten else '#b00020' }}">{{ "ja" if e.eingehalten else "NEIN" }}</td>
+  <td style="padding:4px 8px">Grenzwert: {{ fs(e.grenzwert_fundstelle) }}<br>Definition: {{ fs(e.covenant.fundstelle_definition) }}</td>
+</tr>
+{% endfor %}
+{% else %}
+<tr>
+  <td style="padding:4px 8px">{{ ve.vertrag.vertragsname }}</td>
+  <td style="padding:4px 8px" colspan="5"><em>keine Financial Covenants</em></td>
+  <td style="padding:4px 8px">{% if ve.vertrag.begruendung_fundstelle %}{{ fs(ve.vertrag.begruendung_fundstelle) }}{% endif %}</td>
+</tr>
+{% endif %}
+{% endfor %}
+</tbody></table>
+
+<h3 style="margin-bottom:4px">Herleitung je Covenant</h3>
+<p style="margin-top:0;color:#555">Beträge in T€. Fundstelle Plan = Blatt!Zelle in {{ plan_datei }}; in Klammern der Zellwert, wenn er mit umgekehrtem Vorzeichen eingeht (Aufwand im Plan negativ).</p>
+{% for ve in ergebnisse %}
+{% for e in ve.covenants %}
+<h4 style="margin:14px 0 4px">{{ ve.vertrag.vertragsname }} – {{ e.kennzahl }}</h4>
+<p style="margin:0 0 4px;color:#333"><i>{{ e.covenant.definition_wortlaut }}</i></p>
+<table style="border-collapse:collapse;width:100%" border="1" cellspacing="0">
+<thead style="background:#e8edf2"><tr><th style="padding:3px 8px;text-align:left">Position</th><th style="padding:3px 8px">T€</th><th style="padding:3px 8px;text-align:left">Fundstelle Vertrag</th><th style="padding:3px 8px;text-align:left">Fundstelle Plan</th></tr></thead>
+<tbody>
+<tr><td colspan="4" style="padding:3px 8px;background:#f7f7f7"><b>Zähler</b></td></tr>
+{{ zeilen(e.zaehler_posten) }}
+<tr><td style="padding:3px 8px"><b>= Zähler</b></td><td style="padding:3px 8px;text-align:right"><b>{{ fmt.betrag(e.zaehler) }}</b></td><td></td><td></td></tr>
+<tr><td colspan="4" style="padding:3px 8px;background:#f7f7f7"><b>Nenner</b></td></tr>
+{{ zeilen(e.nenner_posten) }}
+<tr><td style="padding:3px 8px"><b>= Nenner</b></td><td style="padding:3px 8px;text-align:right"><b>{{ fmt.betrag(e.nenner) }}</b></td><td></td><td></td></tr>
+<tr><td style="padding:3px 8px"><b>{{ e.kennzahl }}</b>{% if e.rundung is not none %} (gerundet auf {{ e.rundung }} Nachkommastelle{{ "n" if e.rundung != 1 }}, ungerundet {{ fmt.zahl(e.wert_roh, 4) }}){% endif %}</td>
+    <td style="padding:3px 8px;text-align:right;white-space:nowrap"><b>{{ fmt.kennzahl(e.wert, e.einheit, e.rundung) }}</b></td>
+    <td style="padding:3px 8px">{{ fs(e.covenant.fundstelle_definition) }}</td><td></td></tr>
+<tr><td style="padding:3px 8px">Grenzwert</td><td style="padding:3px 8px;text-align:right;white-space:nowrap">{{ fmt.grenzwert(e.grenzwert, e.einheit, e.richtung, e.rundung) }}</td><td style="padding:3px 8px">{{ fs(e.grenzwert_fundstelle) }}</td><td></td></tr>
+{% if e.marge %}<tr><td style="padding:3px 8px">Info: Margenstufe (kein Covenant)</td><td style="padding:3px 8px;text-align:right">{{ fmt.zahl(e.marge[0], 2) }}&nbsp;% p.&nbsp;a.</td><td style="padding:3px 8px">{{ fs(e.marge[1]) }}</td><td></td></tr>{% endif %}
+</tbody></table>
+{% if e.covenant.hinweise %}
+<ul style="margin:4px 0 0;color:#444">
+{% for h in e.covenant.hinweise %}<li>{{ h.text }} ({{ fs(h.fundstelle) }})</li>{% endfor %}
+</ul>
+{% endif %}
+{% endfor %}
+{% if not ve.covenants %}
+<h4 style="margin:14px 0 4px">{{ ve.vertrag.vertragsname }}</h4>
+<p style="margin:0">{{ ve.vertrag.begruendung }}{% if ve.vertrag.begruendung_fundstelle %} ({{ fs(ve.vertrag.begruendung_fundstelle) }}){% endif %}</p>
+{% endif %}
+{% for w in ve.warnungen %}<p style="margin:4px 0;color:#8a5a00">Hinweis: {{ w }}</p>{% endfor %}
+{% endfor %}
+
+{% if hinweise or ungeprueft or nicht_gefunden %}
+<h3 style="margin-bottom:4px">Hinweise</h3>
+<ul>
+{% if ungeprueft %}<li>Die Vertragszitate wurden in diesem Lauf nicht gegen die PDFs geprüft.</li>{% endif %}
+{% if nicht_gefunden %}<li style="color:#b00020">{{ nicht_gefunden|length }} Zitat(e) wurden auf der angegebenen Vertragsseite nicht gefunden (⚠ markiert) – bitte manuell prüfen.</li>{% endif %}
+{% for h in hinweise %}<li>{{ h }}</li>{% endfor %}
+</ul>
+{% endif %}
+<p style="color:#666;font-size:12px">Die Kennzahlen wurden programmatisch aus den Planwerten berechnet; die Vertragsinhalte wurden KI-gestützt gelesen und mit Fundstellen belegt. Planbasierte Werte dienen der Frühwarnung.<br>– Finn</p>
+</body></html>

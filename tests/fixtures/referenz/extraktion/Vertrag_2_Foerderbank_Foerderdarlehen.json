@@ -1,0 +1,84 @@
+{
+  "vertragsname": "Förderbank Musterland – Förderdarlehen FD-2022-08817",
+  "hat_financial_covenants": true,
+  "begruendung": "§ 13 verpflichtet zu einer Mindest-Wirtschaftlichen-Eigenkapitalquote.",
+  "begruendung_fundstelle": null,
+  "zwischengroessen": [],
+  "covenants": [
+    {
+      "kennzahl": "Wirtschaftliche Eigenkapitalquote",
+      "definition_wortlaut": "Verhältnis des Wirtschaftlichen Eigenkapitals (Eigenkapital zuzüglich 50 % der Sonderposten) zur Bilanzsumme zum Bilanzstichtag, in Prozent.",
+      "einheit": "prozent",
+      "zaehler": [
+        {
+          "bezeichnung": "Eigenkapital (§ 266 Abs. 3 A HGB)",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 1,
+            "paragraph": "§ 1 Abs. 1",
+            "zitat": "„Eigenkapital“ bezeichnet das in der Bilanz der Kreditnehmerin gemäß § 266 Absatz 3"
+          }
+        },
+        {
+          "bezeichnung": "Sonderposten für Investitions- und Baukostenzuschüsse",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 0.5,
+          "hinweis": "Gesellschafterdarlehen und Rückstellungen zählen nicht zum Wirtschaftlichen Eigenkapital",
+          "fundstelle": {
+            "seite": 2,
+            "paragraph": "§ 1 Abs. 1",
+            "zitat": "„Wirtschaftliches Eigenkapital“ bezeichnet das Eigenkapital zuzüglich 50 % (fünfzig Prozent) der Sonderposten"
+          }
+        }
+      ],
+      "nenner": [
+        {
+          "bezeichnung": "Bilanzsumme",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 1,
+            "paragraph": "§ 1 Abs. 1",
+            "zitat": "„Bilanzsumme“ bezeichnet die Summe der Aktiva"
+          }
+        }
+      ],
+      "richtung": "min",
+      "grenzwerte": [
+        {
+          "wert": 27.5,
+          "gueltig_ab": null,
+          "gueltig_bis": null,
+          "fundstelle": {
+            "seite": 6,
+            "paragraph": "§ 13 Abs. 1",
+            "zitat": "eine Wirtschaftliche Eigenkapitalquote von mindestens 27,5 % einzuhalten"
+          }
+        }
+      ],
+      "rundung_nachkommastellen": null,
+      "fundstelle_definition": {
+        "seite": 2,
+        "paragraph": "§ 1 Abs. 1",
+        "zitat": "„Wirtschaftliche Eigenkapitalquote“ bezeichnet das Verhältnis des Wirtschaftlichen Eigenkapitals zur Bilanzsumme"
+      },
+      "hinweise": [
+        {
+          "text": "Eine Unterschreitung auf Planbasis führt zu Gesprächen über Maßnahmen, begründet aber für sich keinen Kündigungsgrund.",
+          "fundstelle": {
+            "seite": 6,
+            "paragraph": "§ 13 Abs. 3",
+            "zitat": "Eine solche Vorschau begründet für sich genommen keinen Kündigungsgrund"
+          }
+        }
+      ]
+    }
+  ],
+  "margenraster": []
+}

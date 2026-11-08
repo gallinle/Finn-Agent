@@ -1,0 +1,187 @@
+{
+  "vertragsname": "Landesbank Mittelland – Investitionsdarlehen LBM-INV-2025-0412",
+  "hat_financial_covenants": true,
+  "begruendung": "§ 13 i. V. m. Anlage 3 verpflichtet zu einem Mindest-Schuldendienstdeckungsgrad.",
+  "begruendung_fundstelle": null,
+  "zwischengroessen": [
+    {
+      "name": "EBITDA",
+      "terme": [
+        {
+          "bezeichnung": "Jahresüberschuss bzw. Jahresfehlbetrag",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 13,
+            "paragraph": "Anlage 3 Abs. 2",
+            "zitat": "EBITDA bezeichnet für den Berechnungszeitraum den Jahresüberschuss bzw. Jahresfehlbetrag"
+          }
+        },
+        {
+          "bezeichnung": "Steuern vom Einkommen und vom Ertrag",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 13,
+            "paragraph": "Anlage 3 Abs. 2",
+            "zitat": "zuzüglich der Steuern vom Einkommen und vom Ertrag"
+          }
+        },
+        {
+          "bezeichnung": "Zinsen und ähnliche Aufwendungen",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 13,
+            "paragraph": "Anlage 3 Abs. 2",
+            "zitat": "zuzüglich der Zinsen und ähnlichen Aufwendungen"
+          }
+        },
+        {
+          "bezeichnung": "sonstige Zinsen und ähnliche Erträge",
+          "art": "planposition",
+          "vorzeichen": -1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 13,
+            "paragraph": "Anlage 3 Abs. 2",
+            "zitat": "abzüglich der sonstigen Zinsen und ähnlichen Erträge"
+          }
+        },
+        {
+          "bezeichnung": "Abschreibungen auf immaterielle Vermögensgegenstände und Sachanlagen",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 13,
+            "paragraph": "Anlage 3 Abs. 2",
+            "zitat": "zuzüglich der Abschreibungen auf immaterielle Vermögensgegenstände des Anlagevermögens und Sachanlagen"
+          }
+        },
+        {
+          "bezeichnung": "außerordentliche Aufwendungen bzw. Erträge (§ 285 Nr. 31 HGB)",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 13,
+            "paragraph": "Anlage 3 Abs. 2",
+            "zitat": "zuzüglich bzw. abzüglich außerordentlicher Aufwendungen bzw. Erträge"
+          }
+        }
+      ],
+      "fundstelle": {
+        "seite": 13,
+        "paragraph": "Anlage 3 Abs. 2",
+        "zitat": "EBITDA bezeichnet für den Berechnungszeitraum den Jahresüberschuss bzw. Jahresfehlbetrag"
+      }
+    }
+  ],
+  "covenants": [
+    {
+      "kennzahl": "Schuldendienstdeckungsgrad",
+      "definition_wortlaut": "Quotient aus EBITDA abzüglich Ertragsteuern (Zähler) und Schuldendienst (Nenner) für denselben Berechnungszeitraum.",
+      "einheit": "faktor",
+      "zaehler": [
+        {
+          "bezeichnung": "EBITDA",
+          "art": "zwischengroesse",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 13,
+            "paragraph": "Anlage 3 Abs. 6",
+            "zitat": "EBITDA abzüglich Ertragsteuern (Zähler)"
+          }
+        },
+        {
+          "bezeichnung": "Ertragsteuern",
+          "art": "planposition",
+          "vorzeichen": -1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 13,
+            "paragraph": "Anlage 3 Abs. 5",
+            "zitat": "Verlustrechnung für den Berechnungszeitraum ausgewiesenen Steuern vom Einkommen und vom Ertrag"
+          }
+        }
+      ],
+      "nenner": [
+        {
+          "bezeichnung": "Zinsaufwand für Finanzverbindlichkeiten",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": "ohne Aufzinsung von Rückstellungen; Gesellschafterdarlehen zählen unabhängig vom Rangrücktritt zu den Finanzverbindlichkeiten (Anlage 3 Abs. 3)",
+          "fundstelle": {
+            "seite": 13,
+            "paragraph": "Anlage 3 Abs. 4 lit. a",
+            "zitat": "dem Zinsaufwand für Finanzverbindlichkeiten; Zinsaufwendungen aus der Aufzinsung von Rückstellungen"
+          }
+        },
+        {
+          "bezeichnung": "planmäßige Tilgungsleistungen auf Finanzverbindlichkeiten",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": "ohne freiwillige Sondertilgungen und vorzeitige Rückzahlungen",
+          "fundstelle": {
+            "seite": 13,
+            "paragraph": "Anlage 3 Abs. 4 lit. b",
+            "zitat": "den im Berechnungszeitraum fälligen planmäßigen Tilgungsleistungen auf Finanzverbindlichkeiten"
+          }
+        }
+      ],
+      "richtung": "min",
+      "grenzwerte": [
+        {
+          "wert": 1.3,
+          "gueltig_ab": null,
+          "gueltig_bis": null,
+          "fundstelle": {
+            "seite": 5,
+            "paragraph": "§ 13 Abs. 1",
+            "zitat": "einen Schuldendienstdeckungsgrad von mindestens 1,30 einzuhalten"
+          }
+        }
+      ],
+      "rundung_nachkommastellen": 2,
+      "fundstelle_definition": {
+        "seite": 13,
+        "paragraph": "Anlage 3 Abs. 6",
+        "zitat": "Der Schuldendienstdeckungsgrad (Debt Service Coverage Ratio, DSCR) ist der Quotient aus"
+      },
+      "hinweise": [
+        {
+          "text": "Weist die Planberechnung weniger als den Mindestwert aus, muss die Kreditnehmerin binnen 30 Tagen Maßnahmen darlegen.",
+          "fundstelle": {
+            "seite": 6,
+            "paragraph": "§ 13 Abs. 3",
+            "zitat": "innerhalb von 30 Tagen darlegen, durch welche Maßnahmen sie die Einhaltung sicherstellen"
+          }
+        },
+        {
+          "text": "Darlehen von Gesellschaftern sind Finanzverbindlichkeiten, auch bei Rangrücktritt.",
+          "fundstelle": {
+            "seite": 13,
+            "paragraph": "Anlage 3 Abs. 3",
+            "zitat": "unabhängig davon, ob für diese Darlehen ein Rangrücktritt vereinbart ist"
+          }
+        }
+      ]
+    }
+  ],
+  "margenraster": []
+}

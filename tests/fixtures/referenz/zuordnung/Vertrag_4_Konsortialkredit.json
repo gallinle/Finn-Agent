@@ -1,0 +1,136 @@
+{
+  "zuordnungen": [
+    {
+      "term_id": "EBITDA/0",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Jahresüberschuss",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Jahresüberschuss laut Erfolgsplan"
+    },
+    {
+      "term_id": "EBITDA/1",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Steuern vom Einkommen und vom Ertrag",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "betrag"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Aufwand, im Plan negativ"
+    },
+    {
+      "term_id": "EBITDA/2",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Zinsen und ähnliche Aufwendungen",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "betrag"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "gesamter Zinsaufwand laut GuV"
+    },
+    {
+      "term_id": "EBITDA/3",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Sonstige Zinsen und ähnliche Erträge",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Zinserträge laut GuV"
+    },
+    {
+      "term_id": "EBITDA/4",
+      "quellen": [
+        {
+          "blatt": "GuV",
+          "zeile": "Abschreibungen auf immaterielle Vermögensgegenstände und Sachanlagen",
+          "spalte": "Plan 2027",
+          "vorzeichen": 1,
+          "uebernahme": "betrag"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Abschreibungen laut GuV"
+    },
+    {
+      "term_id": "EBITDA/5",
+      "quellen": [],
+      "nicht_im_plan": true,
+      "begruendung": "im Erfolgsplan keine außerordentlichen Posten ausgewiesen"
+    },
+    {
+      "term_id": "Nettofinanzverbindlichkeiten/0",
+      "quellen": [
+        {
+          "blatt": "Bilanz",
+          "zeile": "Verbindlichkeiten gegenüber Kreditinstituten",
+          "spalte": "31.12.2027 (Plan)",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "nur Bankdarlehen; nachrangiges Gesellschafterdarlehen ausgenommen, kein bilanziertes Leasing"
+    },
+    {
+      "term_id": "Nettofinanzverbindlichkeiten/1",
+      "quellen": [
+        {
+          "blatt": "Bilanz",
+          "zeile": "Kassenbestand und Guthaben bei Kreditinstituten",
+          "spalte": "31.12.2027 (Plan)",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "frei verfügbar laut Erläuterung 3"
+    },
+    {
+      "term_id": "Eigenkapitalquote/zaehler/0",
+      "quellen": [
+        {
+          "blatt": "Bilanz",
+          "zeile": "A. Eigenkapital",
+          "spalte": "31.12.2027 (Plan)",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "bilanzielles Eigenkapital ohne Sonderposten"
+    },
+    {
+      "term_id": "Eigenkapitalquote/nenner/0",
+      "quellen": [
+        {
+          "blatt": "Bilanz",
+          "zeile": "Summe Aktiva (Bilanzsumme)",
+          "spalte": "31.12.2027 (Plan)",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Bilanzsumme laut Planbilanz"
+    }
+  ]
+}

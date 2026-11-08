@@ -1,0 +1,46 @@
+{
+  "zuordnungen": [
+    {
+      "term_id": "Wirtschaftliche Eigenkapitalquote/zaehler/0",
+      "quellen": [
+        {
+          "blatt": "Bilanz",
+          "zeile": "A. Eigenkapital",
+          "spalte": "31.12.2027 (Plan)",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Eigenkapital laut Planbilanz"
+    },
+    {
+      "term_id": "Wirtschaftliche Eigenkapitalquote/zaehler/1",
+      "quellen": [
+        {
+          "blatt": "Bilanz",
+          "zeile": "B. Sonderposten für Investitions- und Baukostenzuschüsse",
+          "spalte": "31.12.2027 (Plan)",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Sonderposten laut Planbilanz"
+    },
+    {
+      "term_id": "Wirtschaftliche Eigenkapitalquote/nenner/0",
+      "quellen": [
+        {
+          "blatt": "Bilanz",
+          "zeile": "Summe Aktiva (Bilanzsumme)",
+          "spalte": "31.12.2027 (Plan)",
+          "vorzeichen": 1,
+          "uebernahme": "wert"
+        }
+      ],
+      "nicht_im_plan": false,
+      "begruendung": "Bilanzsumme laut Planbilanz"
+    }
+  ]
+}

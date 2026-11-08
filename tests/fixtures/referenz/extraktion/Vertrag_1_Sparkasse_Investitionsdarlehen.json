@@ -1,0 +1,13 @@
+{
+  "vertragsname": "Sparkasse Musterstadt – Investitionsdarlehen Nr. 4471 203 118",
+  "hat_financial_covenants": false,
+  "begruendung": "Der Vertrag enthält keine Finanzkennzahl mit Grenzwert. Die in der Präambel genannte Eigenkapitalquote und der dynamische Verschuldungsgrad zum 31.12.2019 sind nur Grundlage der Kreditentscheidung; die Kündigungsgründe in § 15 sind rein qualitativ.",
+  "begruendung_fundstelle": {
+    "seite": 1,
+    "paragraph": "Präambel",
+    "zitat": "Grundlage der Kreditentscheidung der Sparkasse sind die festgestellten Jahresabschlüsse"
+  },
+  "zwischengroessen": [],
+  "covenants": [],
+  "margenraster": []
+}

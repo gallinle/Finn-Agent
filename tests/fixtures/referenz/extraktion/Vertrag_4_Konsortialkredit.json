@@ -1,0 +1,293 @@
+{
+  "vertragsname": "Konsortialkredit EUR 64 Mio. (Agent Weserland Bank AG)",
+  "hat_financial_covenants": true,
+  "begruendung": "§ 14 Abs. 1 enthält zwei Finanzkennzahlen.",
+  "begruendung_fundstelle": null,
+  "zwischengroessen": [
+    {
+      "name": "EBITDA",
+      "terme": [
+        {
+          "bezeichnung": "Jahresüberschuss bzw. Jahresfehlbetrag",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 2,
+            "paragraph": "§ 1 Abs. 1 „EBITDA“",
+            "zitat": "„EBITDA“ bezeichnet für einen Prüfungszeitraum den Jahresüberschuss bzw. Jahresfehlbetrag"
+          }
+        },
+        {
+          "bezeichnung": "Steuern vom Einkommen und vom Ertrag",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 2,
+            "paragraph": "§ 1 Abs. 1 „EBITDA“",
+            "zitat": "(a) zuzüglich der Steuern vom Einkommen und vom Ertrag"
+          }
+        },
+        {
+          "bezeichnung": "Zinsen und ähnliche Aufwendungen",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 2,
+            "paragraph": "§ 1 Abs. 1 „EBITDA“",
+            "zitat": "(b) zuzüglich der Zinsen und ähnlichen Aufwendungen"
+          }
+        },
+        {
+          "bezeichnung": "sonstige Zinsen und ähnliche Erträge",
+          "art": "planposition",
+          "vorzeichen": -1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 2,
+            "paragraph": "§ 1 Abs. 1 „EBITDA“",
+            "zitat": "(c) abzüglich der sonstigen Zinsen und ähnlichen Erträge"
+          }
+        },
+        {
+          "bezeichnung": "Abschreibungen auf immaterielle Vermögensgegenstände und Sachanlagen",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 2,
+            "paragraph": "§ 1 Abs. 1 „EBITDA“",
+            "zitat": "(d) zuzüglich der Abschreibungen auf immaterielle Vermögensgegenstände und Sachanlagen"
+          }
+        },
+        {
+          "bezeichnung": "außerordentliche Aufwendungen bzw. Erträge (§ 285 Nr. 31 HGB)",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 2,
+            "paragraph": "§ 1 Abs. 1 „EBITDA“",
+            "zitat": "(e) zuzüglich bzw. abzüglich außerordentlicher Aufwendungen bzw. Erträge"
+          }
+        }
+      ],
+      "fundstelle": {
+        "seite": 2,
+        "paragraph": "§ 1 Abs. 1 „EBITDA“",
+        "zitat": "„EBITDA“ bezeichnet für einen Prüfungszeitraum den Jahresüberschuss bzw. Jahresfehlbetrag"
+      }
+    },
+    {
+      "name": "Nettofinanzverbindlichkeiten",
+      "terme": [
+        {
+          "bezeichnung": "Finanzverbindlichkeiten",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": "ohne Nachrangige Gesellschafterdarlehen (qualifizierter Rangrücktritt)",
+          "fundstelle": {
+            "seite": 2,
+            "paragraph": "§ 1 Abs. 1 „Finanzverbindlichkeiten“",
+            "zitat": "jedoch jeweils mit Ausnahme von Nachrangigen Gesellschafterdarlehen"
+          }
+        },
+        {
+          "bezeichnung": "Liquide Mittel",
+          "art": "planposition",
+          "vorzeichen": -1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 2,
+            "paragraph": "§ 1 Abs. 1 „Liquide Mittel“",
+            "zitat": "„Liquide Mittel“ bezeichnet den Kassenbestand und die Guthaben der Kreditnehmerin bei"
+          }
+        }
+      ],
+      "fundstelle": {
+        "seite": 3,
+        "paragraph": "§ 1 Abs. 1 „Nettofinanzverbindlichkeiten“",
+        "zitat": "Finanzverbindlichkeiten abzüglich der Liquiden Mittel"
+      }
+    }
+  ],
+  "covenants": [
+    {
+      "kennzahl": "Eigenkapitalquote",
+      "definition_wortlaut": "Verhältnis des bilanziellen Eigenkapitals (ohne Sonderposten, Rückstellungen und Gesellschafterdarlehen) zur Bilanzsumme zum Prüfungsstichtag, in Prozent.",
+      "einheit": "prozent",
+      "zaehler": [
+        {
+          "bezeichnung": "Eigenkapital (bilanziell)",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": "Sonderposten zählen ausdrücklich nicht zum Eigenkapital",
+          "fundstelle": {
+            "seite": 2,
+            "paragraph": "§ 1 Abs. 1 „Eigenkapital“",
+            "zitat": "„Eigenkapital“ bezeichnet das bilanzielle Eigenkapital der Kreditnehmerin"
+          }
+        }
+      ],
+      "nenner": [
+        {
+          "bezeichnung": "Bilanzsumme",
+          "art": "planposition",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 1,
+            "paragraph": "§ 1 Abs. 1 „Bilanzsumme“",
+            "zitat": "„Bilanzsumme“ bezeichnet die Summe der Aktiva der Kreditnehmerin"
+          }
+        }
+      ],
+      "richtung": "min",
+      "grenzwerte": [
+        {
+          "wert": 30.0,
+          "gueltig_ab": null,
+          "gueltig_bis": null,
+          "fundstelle": {
+            "seite": 6,
+            "paragraph": "§ 14 Abs. 1 lit. a",
+            "zitat": "die Eigenkapitalquote zu jedem Prüfungsstichtag nicht weniger als 30,0 % beträgt"
+          }
+        }
+      ],
+      "rundung_nachkommastellen": 1,
+      "fundstelle_definition": {
+        "seite": 2,
+        "paragraph": "§ 1 Abs. 1 „Eigenkapitalquote“",
+        "zitat": "„Eigenkapitalquote“ bezeichnet das Verhältnis des Eigenkapitals zur Bilanzsumme"
+      },
+      "hinweise": [
+        {
+          "text": "Sonderposten sind nicht Teil des Eigenkapitals.",
+          "fundstelle": {
+            "seite": 2,
+            "paragraph": "§ 1 Abs. 1 „Eigenkapital“",
+            "zitat": "Sonderposten (insbesondere für Investitions- und Baukostenzuschüsse), Rückstellungen und Gesellschafterdarlehen sind"
+          }
+        },
+        {
+          "text": "Abweichungen auf Planbasis begründen keinen Kündigungsgrund (Frühwarnung).",
+          "fundstelle": {
+            "seite": 7,
+            "paragraph": "§ 14 Abs. 3",
+            "zitat": "eine Abweichung von den Grenzwerten auf Planbasis begründet keinen Kündigungsgrund"
+          }
+        }
+      ]
+    },
+    {
+      "kennzahl": "Dynamischer Verschuldungsgrad",
+      "definition_wortlaut": "Verhältnis der Nettofinanzverbindlichkeiten zum letzten Tag des Prüfungszeitraums zum EBITDA für diesen Prüfungszeitraum.",
+      "einheit": "faktor",
+      "zaehler": [
+        {
+          "bezeichnung": "Nettofinanzverbindlichkeiten",
+          "art": "zwischengroesse",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 2,
+            "paragraph": "§ 1 Abs. 1 „Dynamischer Verschuldungsgrad“",
+            "zitat": "das Verhältnis der Nettofinanzverbindlichkeiten zum letzten Tag des Prüfungszeitraums"
+          }
+        }
+      ],
+      "nenner": [
+        {
+          "bezeichnung": "EBITDA",
+          "art": "zwischengroesse",
+          "vorzeichen": 1,
+          "faktor": 1.0,
+          "hinweis": null,
+          "fundstelle": {
+            "seite": 2,
+            "paragraph": "§ 1 Abs. 1 „Dynamischer Verschuldungsgrad“",
+            "zitat": "zum EBITDA für diesen Prüfungszeitraum"
+          }
+        }
+      ],
+      "richtung": "max",
+      "grenzwerte": [
+        {
+          "wert": 3.5,
+          "gueltig_ab": null,
+          "gueltig_bis": null,
+          "fundstelle": {
+            "seite": 7,
+            "paragraph": "§ 14 Abs. 1 lit. b",
+            "zitat": "der Dynamische Verschuldungsgrad für jeden Prüfungszeitraum nicht mehr als 3,50"
+          }
+        }
+      ],
+      "rundung_nachkommastellen": 2,
+      "fundstelle_definition": {
+        "seite": 2,
+        "paragraph": "§ 1 Abs. 1 „Dynamischer Verschuldungsgrad“",
+        "zitat": "„Dynamischer Verschuldungsgrad“ bezeichnet für einen Prüfungszeitraum das Verhältnis"
+      },
+      "hinweise": [
+        {
+          "text": "Abweichungen auf Planbasis begründen keinen Kündigungsgrund (Frühwarnung).",
+          "fundstelle": {
+            "seite": 7,
+            "paragraph": "§ 14 Abs. 3",
+            "zitat": "eine Abweichung von den Grenzwerten auf Planbasis begründet keinen Kündigungsgrund"
+          }
+        }
+      ]
+    }
+  ],
+  "margenraster": [
+    {
+      "kennzahl": "Dynamischer Verschuldungsgrad",
+      "ueber": null,
+      "bis_einschliesslich": 2.5,
+      "marge_prozent": 0.95,
+      "fundstelle": {
+        "seite": 4,
+        "paragraph": "§ 6 Abs. 3",
+        "zitat": "kleiner oder gleich 2,50"
+      }
+    },
+    {
+      "kennzahl": "Dynamischer Verschuldungsgrad",
+      "ueber": 2.5,
+      "bis_einschliesslich": 3.0,
+      "marge_prozent": 1.1,
+      "fundstelle": {
+        "seite": 4,
+        "paragraph": "§ 6 Abs. 3",
+        "zitat": "größer als 2,50 und kleiner oder gleich 3,00"
+      }
+    },
+    {
+      "kennzahl": "Dynamischer Verschuldungsgrad",
+      "ueber": 3.0,
+      "bis_einschliesslich": null,
+      "marge_prozent": 1.25,
+      "fundstelle": {
+        "seite": 4,
+        "paragraph": "§ 6 Abs. 3",
+        "zitat": "größer als 3,00"
+      }
+    }
+  ]
+}
